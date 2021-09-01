@@ -97,8 +97,8 @@ create table course
             primary key,
     topic_id          integer       not null,
     capacity          integer       not null,
-    semester_start    timestamp     not null,
-    semester_duration timestamp     not null,
+    semester_start    integer       not null,
+    semester_duration integer       not null,
     description       varchar(1024) not null,
     teacher_id        integer       not null
         constraint course_teacher_id_fk
