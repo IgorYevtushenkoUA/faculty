@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name="student_has_course")
@@ -24,6 +25,9 @@ public class StudentHasCourse {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="status_id")
     private Status status;
+
+    @Column(name="recording_time")
+    private Timestamp recordingTime;
 
 }
 
