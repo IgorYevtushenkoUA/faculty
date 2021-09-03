@@ -35,6 +35,7 @@
     <div th:each="course:${courses}">
         <div>
             <label th:text="${course.getName()}"/>
+            <button><a th:href="@{/courses/{id} (id=${course.getId()})}">Детальніше</a></button>
         </div>
     </div>
     <div th:if="${totalPages} > 0" class="pagination"
