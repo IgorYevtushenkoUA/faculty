@@ -32,9 +32,19 @@
         </div>
         <input type="submit" th:value="Filter">
     </form>
-    <!--    <div th:each="course:${courses}">-->
-    <!---->
-    <!--    </div>-->
+    <div th:each="course:${courses}">
+        <div>
+            <label th:text="${course.getName()}"/>
+        </div>
+    </div>
+    <div th:if="${totalPages} > 0" class="pagination"
+         th:each="pageNumber : ${pageNumbers}">
+        <a th:href="@{/courses (page=${pageNumber}-1)}"
+           th:text="${pageNumber}"
+           th:class="${pageNumber==number+1} ? active">
+        </a>
+
+    </div>
 </div>
 
 </body>

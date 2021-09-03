@@ -3,6 +3,8 @@ package com.example.faculty.service;
 import com.example.faculty.entety.Course;
 import com.example.faculty.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,8 +17,8 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
-    public List<Course> findAll() {
-        return courseRepository.findAll();
+    public Page<Course> findAll(Pageable pageable) {
+        return courseRepository.findAll(pageable);
     }
 
     public Course findById(int id) {
@@ -42,16 +44,11 @@ public class CourseService {
         // todo send response that can not save
     }
 
-    public List<Course> findAllByParams(List<String> courseName,
-                                        List<Integer> duration,
-                                        List<Integer> capacity,
-                                        List<String> topic,
-                                        List<Integer> teacherId) {
-        return courseRepository.findAllByParams(courseName,
-                duration,
-                capacity,
-                topic,
-                teacherId);
+    public Page<Course> findAllByParams(List<String> courseName, List<Integer> duration,
+                                        List<Integer> capacity, List<String> topic,
+                                        List<Integer> teacherId, Pageable pageable) {
+        return courseRepository.findAllByParams(courseName, duration, capacity,
+                topic, teacherId, pageable);
     }
 
     public List<String> findAllCourseNames() {
@@ -81,7 +78,6 @@ public class CourseService {
     public List<String> findCourseNameByName(String name) {
         return courseRepository.findCourseNameByName(name);
     }
-
 
 
 }

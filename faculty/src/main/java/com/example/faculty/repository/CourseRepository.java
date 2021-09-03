@@ -1,15 +1,19 @@
 package com.example.faculty.repository;
 
 import com.example.faculty.entety.Course;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CourseRepository extends JpaRepository<Course, Integer> {
+public interface CourseRepository extends PagingAndSortingRepository<Course, Integer> {
 
-    List<Course> findAll();
+    Page<Course> findAll(Pageable pageable);
 
     Course findById(int id);
 
@@ -40,10 +44,8 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             "c.capacity in (:capacity) and " +
             "c.topic.name in (:topic) and " +
             "c.teacher.id in (:teacherId)")
-    List<Course> findAllByParams(@Param("courseName") List<String> courseName,
-                                 @Param("duration") List<Integer> duration,
-                                 @Param("capacity") List<Integer> capacity,
-                                 @Param("topic") List<String> topic,
-                                 @Param("teacherId") List<Integer> teacherId);
+    Page<Course> findAllByParams(@Param("courseName") List<String> courseName, @Param("duration") List<Integer> duration,
+                                 @Param("capacity") List<Integer> capacity, @Param("topic") List<String> topic,
+                                 @Param("teacherId") List<Integer> teacherId, Pageable pageable);
 
 }
