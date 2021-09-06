@@ -10,15 +10,16 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode
 public class Teacher extends User {
 
     @OneToMany(mappedBy = "topic")
-    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private List<Course> courses;
 
+    public String toString() {
+        return "Teacher:\n" + super.toString();
+    }
 
 
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/admin/courses/create}" method="post">
+
+    <div>
+        <label th:text="CourseName"/>
+        <input type="text" th:name="name">
+    </div>
+
+    <select name="topic">
+        тут має бути список назв топіків(тематик)
+    </select>
+    <input type="text" th:name="topic">
+
+
+    <div>
+        <label th:text="Capacity"/>
+        <input type="number" th:name="capacity">
+    </div>
+
+    <div>
+        <label th:text="semesterStart"/>
+        <input type="number" th:name="semesterStart">
+    </div>
+
+    <div>
+        <label th:text="Duration"/>
+        <input type="text" th:name="semesterDuration">
+    </div>
+
+    <div>
+        <label th:text="Description"/>
+        <input type="text" th:name="description">
+    </div>
+
+    <select name="topic">
+        тут має бути список назв викладачів(їх кафедр, щоб імена не повторювалися)
+    </select>
+
+    <div>
+        <label th:text="TeacherName"/>
+        <input type="text" th:name="teacherName">
+    </div>
+
+    <input type="submit" th:value="Create">
+
+</form>
+</body>
+</html>

@@ -3,9 +3,7 @@ package com.example.faculty.repository;
 import com.example.faculty.entety.Course;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
@@ -14,6 +12,8 @@ import java.util.List;
 public interface CourseRepository extends PagingAndSortingRepository<Course, Integer> {
 
     Page<Course> findAll(Pageable pageable);
+
+    List<Course> findAll();
 
     Course findById(int id);
 
@@ -47,5 +47,8 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Int
     Page<Course> findAllByParams(@Param("courseName") List<String> courseName, @Param("duration") List<Integer> duration,
                                  @Param("capacity") List<Integer> capacity, @Param("topic") List<String> topic,
                                  @Param("teacherId") List<Integer> teacherId, Pageable pageable);
+
+    @Query("select c from Course c join c.teacher t where t.id=:id")
+    List<Course> findAllTeacherCourses(int id);
 
 }

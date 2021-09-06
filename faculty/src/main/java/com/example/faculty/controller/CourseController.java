@@ -35,7 +35,7 @@ public class CourseController {
             @RequestParam(value = "topic", defaultValue = "") String topic,
             @RequestParam(value = "teacher", defaultValue = "") String teacher
     ) {
-        Page<Course> pages = setCourses(courseName, duration, capacity, topic, teacher, pageable);
+        Page<Course> pages = courseService.setCourses(courseName, duration, capacity, topic, teacher, pageable);
         model.addAttribute("number", pages.getNumber());
         model.addAttribute("totalPages", pages.getTotalPages());
         model.addAttribute("totalElements", pages.getTotalElements());
@@ -48,36 +48,9 @@ public class CourseController {
     @GetMapping("/courses/{id}")
     public String courseGet(Model model,
                             @PathVariable("id") Integer id) {
-        model.addAttribute(courseService.findById(id));
+        model.addAttribute("course",courseService.findById(id));
         return "course";
     }
 
-    private Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
-        if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
-                && topic.isEmpty() && teacher.isEmpty()) {
-            return courseService.findAll(pageable);
-        }
-        return courseService.findAllByParams(setCourseNameParam(courseName), setDurationParam(duration), setCapacityParam(capacity),
-                setTopicsParam(topic), setTeacherNameParam(teacher), pageable);
-    }
 
-    private List<String> setCourseNameParam(String courseName) {
-        return courseName.isEmpty() ? courseService.findAllCourseNames() : courseService.findCourseNameByName(courseName);
-    }
-
-    private List<Integer> setDurationParam(Integer duration) {
-        return duration == EMPTY_INTEGER_VALUE ? courseService.findAllDurations() : List.of(duration);
-    }
-
-    private List<Integer> setCapacityParam(Integer capacity) {
-        return capacity == EMPTY_INTEGER_VALUE ? courseService.findAllCapacities() : List.of(capacity);
-    }
-
-    private List<String> setTopicsParam(String topics) {
-        return topics.isEmpty() ? courseService.findAllTopics() : List.of(topics);
-    }
-
-    private List<Integer> setTeacherNameParam(String teacherName) {
-        return teacherName.isEmpty() ? courseService.findAllTeacherNames() : courseService.findTeacherIdByName(teacherName);
-    }
 }

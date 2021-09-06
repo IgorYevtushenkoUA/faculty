@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div>
+    <form th:action="@{/admin/teachers}" th:method="get">
+        <input type="text" name="name">
+        <input type="submit" th:value="Search">
+    </form>
+    <div th:each="t:${teachers}">
+        <div>
+            <p th:text="${t.getLastName()} + ' ' + ${t.getFirstName()} + ' ' + ${t.getSecondName()}"/>
+        </div>
+    </div>
+    <div>
+        <a th:href="@{/admin/teachers/register}"> Додати викладача</a>
+    </div>
+</div>
+
+</body>
+</html>

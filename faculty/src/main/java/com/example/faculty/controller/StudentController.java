@@ -8,7 +8,7 @@ public class StudentController {
 
     @GetMapping("/student")
     public String studentGet(){
-        return "student";
+        return "studentPersonalPage";
     }
 
 }

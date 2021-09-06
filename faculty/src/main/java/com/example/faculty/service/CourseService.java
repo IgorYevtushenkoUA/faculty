@@ -2,6 +2,7 @@ package com.example.faculty.service;
 
 import com.example.faculty.entety.Course;
 import com.example.faculty.repository.CourseRepository;
+import com.example.faculty.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
+import static com.example.faculty.util.Constants.EMPTY_INTEGER_VALUE;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -17,8 +20,14 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
+    private final UserRepository userRepository;
+
     public Page<Course> findAll(Pageable pageable) {
         return courseRepository.findAll(pageable);
+    }
+
+    public List<Course> findAll() {
+        return courseRepository.findAll();
     }
 
     public Course findById(int id) {
@@ -51,6 +60,10 @@ public class CourseService {
                 topic, teacherId, pageable);
     }
 
+    public List<Course> findAllTeacherCourses(int id) {
+        return courseRepository.findAllTeacherCourses(id);
+    }
+
     public List<String> findAllCourseNames() {
         return courseRepository.findAllCourseNames();
     }
@@ -79,5 +92,46 @@ public class CourseService {
         return courseRepository.findCourseNameByName(name);
     }
 
+    public Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
+        if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
+                && topic.isEmpty() && teacher.isEmpty()) {
+            return findAll(pageable);
+        }
+        return findAllByParams(setCourseNameParam(courseName), setDurationParam(duration), setCapacityParam(capacity),
+                setTopicsParam(topic), setTeacherNameParam(teacher), pageable);
+    }
 
+    public List<String> setCourseNameParam(String courseName) {
+        return courseName.isEmpty() ? findAllCourseNames() : findCourseNameByName(courseName);
+    }
+
+    public List<Integer> setDurationParam(Integer duration) {
+        return duration == EMPTY_INTEGER_VALUE ? findAllDurations() : List.of(duration);
+    }
+
+    public List<Integer> setCapacityParam(Integer capacity) {
+        return capacity == EMPTY_INTEGER_VALUE ? findAllCapacities() : List.of(capacity);
+    }
+
+    public List<String> setTopicsParam(String topics) {
+        return topics.isEmpty() ? findAllTopics() : List.of(topics);
+    }
+
+    public List<Integer> setTeacherNameParam(String teacherName) {
+        return teacherName.isEmpty() ? findAllTeacherNames() : findTeacherIdByName(teacherName);
+    }
+
+    public Course deleteTeacherFromCourse(int id) {
+        Course course = courseRepository.findById(id);
+        if (course != null)
+            course.setTeacher(null);
+        return course;
+    }
+
+    public Course addTeacherToCourse(int courseId, int teacherId){
+        Course course = courseRepository.findById(courseId);
+        if (course != null)
+            course.setTeacher(userRepository.findTeacherById(teacherId));
+        return course;
+    }
 }
