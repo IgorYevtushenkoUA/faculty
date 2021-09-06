@@ -1,9 +1,6 @@
 package com.example.faculty.entety;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,20 +11,22 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentHasCourse {
 
     @EmbeddedId
     private StudentCourseId studentCourseId;
 
     @Column(name="mark")
-    private int mark;
+    private Integer mark;
+
+    @Column(name="recording_time")
+    private Timestamp recordingTime;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="status_id")
     private Status status;
-
-    @Column(name="recording_time")
-    private Timestamp recordingTime;
 
 }
 

@@ -1,9 +1,6 @@
 package com.example.faculty.entety;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -14,6 +11,8 @@ import java.io.Serializable;
 @Setter
 @ToString
 @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentCourseId implements Serializable {
 
     @Column(name="student_id")

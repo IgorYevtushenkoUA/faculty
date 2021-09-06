@@ -2,6 +2,8 @@ package com.example.faculty.controller;
 
 import com.example.faculty.entety.Course;
 import com.example.faculty.service.CourseService;
+import com.example.faculty.service.StudentHasCourseService;
+import com.example.faculty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,20 +12,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.example.faculty.util.Constants.DEFAULT_PAGE_SIZE;
-import static com.example.faculty.util.Constants.EMPTY_INTEGER_VALUE;
 
 @Controller
 public class CourseController {
 
     @Autowired
-    private CourseService courseService;
+    CourseService courseService;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    StudentHasCourseService studentHasCourseService;
 
     @GetMapping("/courses")
     public String coursesGet(
@@ -45,12 +52,20 @@ public class CourseController {
         return "courses";
     }
 
-    @GetMapping("/courses/{id}")
+    @GetMapping("/courses/{courseId}")
     public String courseGet(Model model,
-                            @PathVariable("id") Integer id) {
-        model.addAttribute("course",courseService.findById(id));
+                            @PathVariable("courseId") Integer courseId) {
+        model.addAttribute("course", courseService.findById(courseId));
+        model.addAttribute("courseId", courseId);
         return "course";
     }
 
+    @PostMapping("/courses/{courseId}")
+    public String coursePost(@PathVariable("courseId") Integer courseId) {
+        //todo change{studentId} to real student
+        int studentId = 7;
+        studentHasCourseService.enrollStudentToCourse(studentId, courseId);
+        return "redirect:/courses/{courseId}";
+    }
 
 }

@@ -7,6 +7,9 @@
 <body>
 <div>
     <label th:text="${course.getName()}"></label>
+    <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
+        <input type="submit" th:value="Enroll_ME"/>
+    </form>
 </div>
 </body>
 </html>
