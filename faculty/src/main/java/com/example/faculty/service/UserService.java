@@ -61,7 +61,6 @@ public class UserService implements UserDetailsService {
         return userRepository.findTeachersByPIB(PIB);
     }
 
-
     public List<Teacher> findAllTeacher() {
         return userRepository.findAllTeacher();
     }
@@ -69,5 +68,6 @@ public class UserService implements UserDetailsService {
     public List<Student> findAllStudent() {
         return userRepository.findAllStudent();
     }
+
 
 }

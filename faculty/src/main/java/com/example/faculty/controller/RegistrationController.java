@@ -29,9 +29,9 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registrationPost(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-        System.out.println(userForm);
-        System.out.println("we are in post register");
+    public String registrationPost(@ModelAttribute("userForm") Student userForm, BindingResult bindingResult, Model model) {
+        userForm.setEnable(true);
+
         if (bindingResult.hasErrors())
             return "register";
 

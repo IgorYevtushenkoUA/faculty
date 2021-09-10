@@ -134,4 +134,9 @@ public class CourseService {
             course.setTeacher(userRepository.findTeacherById(teacherId));
         return course;
     }
+
+    public void deleteCourseById(int id){
+        courseRepository.deleteById(id);
+    }
+
 }

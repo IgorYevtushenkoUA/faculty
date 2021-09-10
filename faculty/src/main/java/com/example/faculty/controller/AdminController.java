@@ -122,29 +122,30 @@ public class AdminController {
         course.setSemesterStart(semesterStart);
         course.setSemesterDuration(semesterDuration);
         course.setDescription(description);
-        course.setTeacher((Teacher) userService.findTeacherByPIB(teacherName));
+        course.setTeacher(userService.findTeacherByPIB(teacherName));
         courseService.save(course);
         return "redirect:/admin";
     }
 
-    @GetMapping("/admin/course/delete/{id}")
-    public String deleteCourseGet() {
-        return null;
+    @GetMapping("/admin/courses/{id}")
+    public String courseInfoGet(Model model,
+                                @PathVariable("id") Integer id) {
+        model.addAttribute("course", courseService.findById(id));
+        return "/admin/courseInfo";
     }
 
-    @PostMapping("/admin/courses/delete/{id}")
-    public String deleteCoursePost() {
-        return null;
+    @PostMapping(value = "/admin/courses/{id}", params = "action=save")
+    public String courseInfoEditPost(@PathVariable("id") Integer id, @RequestParam("name") String name) {
+        Course course = courseService.findById(id);
+        course.setName(name);
+        courseService.save(course);
+        return "redirect:/admin/courses";
     }
 
-    @GetMapping("/admin/courses/edit/{id}")
-    public String editCourseGet() {
-        return null;
-    }
-
-    @PostMapping("/admin/courses/edit/{id}")
-    public String editCoursePost() {
-        return null;
+    @PostMapping(value = "/admin/courses/{id}", params = "action=delete")
+    public String courseInfoDeletePost(@PathVariable("id") Integer id) {
+        courseService.deleteCourseById(id);
+        return "redirect:/admin/courses";
     }
 
     @GetMapping("/admin/students")
@@ -166,12 +167,5 @@ public class AdminController {
     public String studentPost() {
         return null;
     }
-
-    /*
-    Адміністратор системи володіє правами:
-- реєстрації викладача і закріплення за ним курсу;
-- додавання, видалення, редагування курсу;
-- блокування, розблокування студента
-     */
 
 }
