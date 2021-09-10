@@ -22,6 +22,7 @@ public class FacultyApplication {
 		CourseService courseService = applicationContext.getBean(CourseService.class);
 		UserService userService = applicationContext.getBean(UserService.class);
 		RoleService roleService = applicationContext.getBean(RoleService.class);
+
 	}
 
 }

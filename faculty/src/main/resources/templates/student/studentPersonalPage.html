@@ -6,5 +6,23 @@
 </head>
 <body>
 student page
+
+<form th:action="@{/student/{id} (id=${id})}" method="get">
+
+<select name="type">
+    <option th:value="IN_PROGRESS" th:text="IN_PROGRESS" th:selected="(${type}==IN_PROGRESS)"/>
+    <option th:value="NOT_STARTED" th:text="NOT_STARTED" th:selected="(${type}==NOT_STARTED)"/>
+    <option th:value="FINISHED" th:text="FINISHED" th:selected="(${type}==FINISHED)"/>
+</select>
+
+<input type="submit" th:value="search">
+</form>
+todo -> do dto | where will be mark and course name
+<div th:each="course:${courses}">
+     <div>
+         <label th:text="${course.getName()}"></label>
+     </div>
+</div>
+
 </body>
 </html>

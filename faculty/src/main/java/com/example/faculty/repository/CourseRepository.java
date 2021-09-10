@@ -51,4 +51,12 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Int
     @Query("select c from Course c join c.teacher t where t.id=:id")
     List<Course> findAllTeacherCourses(int id);
 
+
+    @Query("select c " +
+            "from Course c " +
+            "inner join  StudentHasCourse shc on shc.studentCourseId.courseId=c.id " +
+            "   and shc.studentCourseId.studentId=:studentId " +
+            "where shc.status.name=:statusName " )
+    List<Course> findAllStudentCoursesByType(@Param("studentId") int studentId, @Param("statusName") String statusName);
+
 }

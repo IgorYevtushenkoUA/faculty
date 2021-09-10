@@ -139,4 +139,8 @@ public class CourseService {
         courseRepository.deleteById(id);
     }
 
+    public List<Course> findAllStudentCoursesByType(int id, String statusName){
+        return courseRepository.findAllStudentCoursesByType(id, statusName);
+    }
+
 }
