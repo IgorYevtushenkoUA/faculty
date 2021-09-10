@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+page where all teachers courses
+<div th:each="course:${courses}">
+    <div >
+        <h2 th:text="${course.getName()}"/>
+        <p th:text="${course.getDescription()}"/>
+    </div>
+</div>
+todo add another important information
+</body>
+</html>

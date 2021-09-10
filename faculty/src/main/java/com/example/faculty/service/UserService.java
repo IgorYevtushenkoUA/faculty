@@ -3,6 +3,7 @@ package com.example.faculty.service;
 import com.example.faculty.entety.*;
 import com.example.faculty.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -69,5 +70,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllStudent();
     }
 
+    public Student findStudentInfoByIdAndCourseId( int studentId, int courseId){
+        return userRepository.findStudentInfoByIdAndCourseId(studentId, courseId);
+    }
+
+    public Student findStudentById(int id){
+        return userRepository.findStudentById(id);
+    }
 
 }

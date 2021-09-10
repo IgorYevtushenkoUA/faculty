@@ -1,5 +1,6 @@
 package com.example.faculty.service;
 
+import com.example.faculty.entety.Student;
 import com.example.faculty.entety.StudentCourseId;
 import com.example.faculty.entety.StudentHasCourse;
 import com.example.faculty.enums.STATUS;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 @Transactional
@@ -20,6 +22,7 @@ public class StudentHasCourseService {
 
     @Autowired
     StatusService statusService;
+
     public void enrollStudentToCourse(int studentId, int courseId) {
         StudentHasCourse shc = new StudentHasCourse(
                 new StudentCourseId(studentId, courseId),
@@ -28,4 +31,9 @@ public class StudentHasCourseService {
                 statusService.findByName(STATUS.NOT_STARTED.name()));
         studentHasCourseRepository.save(shc);
     }
+
+    public List<StudentHasCourse> findAllStudentsByCourseAndYear(int courseId, int year){
+        return studentHasCourseRepository.findAllStudentsByCourseAndYear(courseId, year);
+    }
+
 }
