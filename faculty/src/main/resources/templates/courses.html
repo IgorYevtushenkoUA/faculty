@@ -2,51 +2,92 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Courses</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
 </head>
 <body>
 
-<div>
-    <form action="/courses" method="get">
-        <div>
-            <div>
-                <label th:text="Course"/>
-                <input type="text" name="courseName">
-            </div>
-            <div>
-                <label th:text="Duration"/>
-                <input type="number" name="duration">
-            </div>
-            <div>
-                <label th:text="Capacity"/>
-                <input type="number" name="capacity">
-            </div>
-            <div>
-                <label th:text="Topic"/>
-                <input type="text" name="topic">
-            </div>
-            <div>
-                <label th:text="Teacher"/>
-                <input type="text" name="teacherName">
-            </div>
-        </div>
-        <input type="submit" th:value="Filter">
-    </form>
-    <div th:each="course:${courses}">
-        <div>
-            <label th:text="${course.getName()}"/>
-            <button><a th:href="@{/courses/{id} (id=${course.getId()})}">Детальніше</a></button>
-        </div>
-    </div>
-    <div th:if="${totalPages} > 0" class="pagination"
-         th:each="pageNumber : ${pageNumbers}">
-        <a th:href="@{/courses (page=${pageNumber}-1)}"
-           th:text="${pageNumber}"
-           th:class="${pageNumber==number+1} ? active">
-        </a>
+<div class="container p-3">
 
+  <form action="/courses" method="get">
+        <div class="">
+            <div class="input-group p-1">
+                <span class="input-group-text">Course :</span>
+                <input class="form-control" aria-label="With textarea" type="text" name="courseName" placeholder="Назва дисципліни">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Duration :</span>
+                <input class="form-control" aria-label="With textarea"  type="number" name="duration" placeholder="Тривалість">
+            </div>
+            <div class="input-group p-1">
+                <span class="input-group-text">Capacity :</span>
+                <input class="form-control" aria-label="With textarea"  type="number" name="capacity" placeholder="Кількість студентів">
+            </div>
+            <div class="input-group p-1">
+                <span class="input-group-text">Topic :</span>
+                <input class="form-control" aria-label="With textarea"  type="text" name="topic" placeholder="Топік">
+            </div>
+            <div class="input-group p-1">
+                <span class="input-group-text">Teacher :</span>
+                <input class="form-control" aria-label="With textarea"  type="text" name="teacher" placeholder="ПІБ викладача">
+            </div>
+        </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
+    </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 mt-5 mb-5">
+                <table id="posts" class="table table-bordered table-responsive-sm">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="course : ${courses.page}">
+                        <td th:text="${course.getId()}">id</td>
+                        <td th:text="${course.getName()}">title</td>
+                        <td th:text="${course.getDescription()}">body</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation" class="paging">
+                    <ul class="pagination" th:if="${courses.page.totalPages > 1}">
+                        <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                               tabindex="-1">Previous</a>
+                        </li>
+                        <th:block th:each="item : ${courses.paging.getItems()}">
+                            <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
+                                th:if="${item.pageItemType.name() == 'PAGE'}">
+                                <a class="page-link" th:href="@{'/courses?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                                   th:text="${item.index}"></a>
+                            </li>
+                            <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                        </th:block>
+                        <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
+                            <a class="page-link" th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
     </div>
+
 </div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
 </body>
 </html>

@@ -25,6 +25,8 @@ public class FacultyApplication {
 		RoleService roleService = applicationContext.getBean(RoleService.class);
 		StudentHasCourseRepository studentHasCourseRepository = applicationContext.getBean(StudentHasCourseRepository.class);
 
+		System.out.println(courseService.findTeacherIdByName("глиб"));
+
 	}
 
 }

@@ -37,20 +37,22 @@ public class CourseController {
             Model model,
             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
             @RequestParam(value = "courseName", defaultValue = "") String courseName,
-            @RequestParam(value = "duration", defaultValue = "-1") Integer duration,
-            @RequestParam(value = "capacity", defaultValue = "-1") Integer capacity,
+            @RequestParam(value = "duration", defaultValue = "0") int duration,
+            @RequestParam(value = "capacity", defaultValue = "0") int capacity,
             @RequestParam(value = "topic", defaultValue = "") String topic,
-            @RequestParam(value = "teacher", defaultValue = "") String teacher
-    ) {
-        Page<Course> pages = courseService.setCourses(courseName, duration, capacity, topic, teacher, pageable);
-        model.addAttribute("number", pages.getNumber());
-        model.addAttribute("totalPages", pages.getTotalPages());
-        model.addAttribute("totalElements", pages.getTotalElements());
-        model.addAttribute("pageNumbers", IntStream.rangeClosed(1, pages.getTotalPages()).boxed().collect(Collectors.toList()));
-        model.addAttribute("size", pages.getSize());
-        model.addAttribute("courses", pages.getContent());
+            @RequestParam(value = "teacher", defaultValue = "") String teacher,
+            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "size", required = false, defaultValue = "2") int size) {
+
+        model.addAttribute("courseName", courseName);
+        model.addAttribute("duration", duration);
+        model.addAttribute("capacity", capacity);
+        model.addAttribute("topic", topic);
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size));
         return "courses";
     }
+
 
     @GetMapping("/courses/{courseId}")
     public String courseGet(Model model,

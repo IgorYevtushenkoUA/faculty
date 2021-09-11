@@ -1,13 +1,16 @@
 package com.example.faculty.service;
 
 import com.example.faculty.entety.Course;
+import com.example.faculty.entety.paging.Paged;
+import com.example.faculty.entety.paging.Paging;
 import com.example.faculty.repository.CourseRepository;
 import com.example.faculty.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Sort;
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -92,6 +95,12 @@ public class CourseService {
         return courseRepository.findCourseNameByName(name);
     }
 
+    public Paged<Course> getPage(String courseName, Integer duration, Integer capacity, String topic, String teacher,int pageNumber, int size) {
+        PageRequest request = PageRequest.of(pageNumber - 1, size);
+        Page<Course> postPage = setCourses(courseName, duration, capacity, topic, teacher,request);
+        return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
+    }
+
     public Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
         if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
                 && topic.isEmpty() && teacher.isEmpty()) {
@@ -118,7 +127,9 @@ public class CourseService {
     }
 
     public List<Integer> setTeacherNameParam(String teacherName) {
-        return teacherName.isEmpty() ? findAllTeacherNames() : findTeacherIdByName(teacherName);
+        return teacherName.isEmpty()
+                ? findAllTeacherNames()
+                : findTeacherIdByName(teacherName);
     }
 
     public Course deleteTeacherFromCourse(int id) {
@@ -142,5 +153,7 @@ public class CourseService {
     public List<Course> findAllStudentCoursesByType(int id, String statusName){
         return courseRepository.findAllStudentCoursesByType(id, statusName);
     }
+
+
 
 }
