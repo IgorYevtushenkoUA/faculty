@@ -36,4 +36,8 @@ public class StudentHasCourseService {
         return studentHasCourseRepository.findAllStudentsByCourseAndYear(courseId, year);
     }
 
+    public Integer getMarkForCourse(int studentId, int courseId){
+        return studentHasCourseRepository.getMarkForCourse(studentId, courseId);
+    }
+
 }

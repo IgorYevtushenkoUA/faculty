@@ -13,6 +13,14 @@ public interface StudentHasCourseRepository extends JpaRepository<StudentHasCour
             "from student_has_course shc " +
             "where shc.course_id=:courseId " +
             "and date_part('year', shc.recording_time) = :year ", nativeQuery = true)
-    List<StudentHasCourse> findAllStudentsByCourseAndYear(@Param("courseId") int courseId, @Param("year") int year);
+    List<StudentHasCourse> findAllStudentsByCourseAndYear(@Param("courseId") int courseId,
+                                                          @Param("year") int year);
+
+    @Query("select shc.mark " +
+            "from StudentHasCourse shc " +
+            "where shc.studentCourseId.studentId=:studentId " +
+            "   and shc.studentCourseId.courseId=:courseId")
+    Integer getMarkForCourse(@Param("studentId") int studentId,
+                             @Param("courseId") int courseId);
 
 }

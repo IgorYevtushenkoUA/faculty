@@ -3,26 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
 </head>
 <body>
-student page
 
-<form th:action="@{/student/{id} (id=${id})}" method="get">
+<div class="container mt-5 mb-5">
+    <form th:action="@{/student}" method="get" class="row">
+        <div class="input-group">
+            <select class="custom-select" name="type">
+                <option th:value="IN_PROGRESS" th:text="IN_PROGRESS" th:selected="(${type}==IN_PROGRESS)"/>
+                <option th:value="NOT_STARTED" th:text="NOT_STARTED" th:selected="(${type}==NOT_STARTED)"/>
+                <option th:value="FINISHED" th:text="FINISHED" th:selected="(${type}==FINISHED)"/>
+            </select>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </div>
+    </form>
 
-<select name="type">
-    <option th:value="IN_PROGRESS" th:text="IN_PROGRESS" th:selected="(${type}==IN_PROGRESS)"/>
-    <option th:value="NOT_STARTED" th:text="NOT_STARTED" th:selected="(${type}==NOT_STARTED)"/>
-    <option th:value="FINISHED" th:text="FINISHED" th:selected="(${type}==FINISHED)"/>
-</select>
-
-<input type="submit" th:value="search">
-</form>
-todo -> do dto | where will be mark and course name
-<div th:each="course:${courses}">
-     <div>
-         <label th:text="${course.getName()}"></label>
-     </div>
+    <table class="table mt-2">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Course Name</th>
+            <th>Mark</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course, iter :${courses}">
+            <td th:text="${iter.index+1}"/>
+            <td th:text="${course.getCourseName()}"/>
+            <td th:text="${course.getMark()}"/>
+        </tr>
+        </tbody>
+    </table>
 </div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
 </body>
 </html>

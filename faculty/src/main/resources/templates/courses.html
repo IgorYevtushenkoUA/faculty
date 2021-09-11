@@ -10,79 +10,90 @@
 
 <div class="container p-3">
 
-  <form action="/courses" method="get">
+    <form action="/courses" method="get">
         <div class="">
             <div class="input-group p-1">
                 <span class="input-group-text">Course :</span>
-                <input class="form-control" aria-label="With textarea" type="text" name="courseName" placeholder="Назва дисципліни">
+                <input class="form-control" aria-label="With textarea" type="text" name="courseName"
+                       placeholder="Назва дисципліни">
             </div>
 
             <div class="input-group p-1">
                 <span class="input-group-text">Duration :</span>
-                <input class="form-control" aria-label="With textarea"  type="number" name="duration" placeholder="Тривалість">
+                <input class="form-control" aria-label="With textarea" type="number" name="duration"
+                       placeholder="Тривалість">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Capacity :</span>
-                <input class="form-control" aria-label="With textarea"  type="number" name="capacity" placeholder="Кількість студентів">
+                <input class="form-control" aria-label="With textarea" type="number" name="capacity"
+                       placeholder="Кількість студентів">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Topic :</span>
-                <input class="form-control" aria-label="With textarea"  type="text" name="topic" placeholder="Топік">
+                <input class="form-control" aria-label="With textarea" type="text" name="topic" placeholder="Топік">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Teacher :</span>
-                <input class="form-control" aria-label="With textarea"  type="text" name="teacher" placeholder="ПІБ викладача">
+                <input class="form-control" aria-label="With textarea" type="text" name="teacher"
+                       placeholder="ПІБ викладача">
             </div>
         </div>
-      <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
     </form>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-10 mt-5 mb-5">
-                <table id="posts" class="table table-bordered table-responsive-sm">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="course : ${courses.page}">
-                        <td th:text="${course.getId()}">id</td>
-                        <td th:text="${course.getName()}">title</td>
-                        <td th:text="${course.getDescription()}">body</td>
-                    </tr>
-                    </tbody>
-                </table>
+<!--    <div class="row">-->
+        <div class="col-lg-10 mt-5 mb-5">
+            <table class="table table-bordered table-responsive-sm">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Capacity</th>
+                    <th>Semester</th>
+                    <th>Duration</th>
+                    <th>Teacher</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="course : ${courses.page}">
+                    <td th:text="${course.getId()}">id</td>
+                    <td th:text="${course.getName()}" />
+                    <td th:text="${course.getDescription()}" />
+                    <td th:text="${course.getCapacity()}" />
+                    <td th:text="${course.getSemesterStart()}" />
+                    <td th:text="${course.getSemesterDuration()}" />
+                    <td th:text="${course.getTeacher().getLastName()} + ' ' + ${course.getTeacher().getFirstName().charAt(0)} + '.' + ${course.getTeacher().getSecondName().charAt(0)} + '.' "/>
+                </tr>
+                </tbody>
+            </table>
 
-                <nav aria-label="Page navigation" class="paging">
-                    <ul class="pagination" th:if="${courses.page.totalPages > 1}">
-                        <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
-                            <a class="page-link" th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
-                               tabindex="-1">Previous</a>
+            <nav aria-label="Page navigation" class="paging">
+                <ul class="pagination" th:if="${courses.page.totalPages > 1}">
+                    <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
+                        <a class="page-link"
+                           th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                           tabindex="-1">Previous</a>
+                    </li>
+                    <th:block th:each="item : ${courses.paging.getItems()}">
+                        <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
+                            th:if="${item.pageItemType.name() == 'PAGE'}">
+                            <a class="page-link"
+                               th:href="@{'/courses?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                               th:text="${item.index}"></a>
                         </li>
-                        <th:block th:each="item : ${courses.paging.getItems()}">
-                            <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
-                                th:if="${item.pageItemType.name() == 'PAGE'}">
-                                <a class="page-link" th:href="@{'/courses?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
-                                   th:text="${item.index}"></a>
-                            </li>
-                            <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
-                                <a class="page-link" href="#">...</a>
-                            </li>
-                        </th:block>
-                        <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
-                            <a class="page-link" th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                        <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                            <a class="page-link" href="#">...</a>
                         </li>
-                    </ul>
-                </nav>
-
-            </div>
+                    </th:block>
+                    <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
+                        <a class="page-link"
+                           th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </div>
-
+<!--    </div>-->
 </div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
