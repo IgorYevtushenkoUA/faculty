@@ -1,15 +1,15 @@
 package com.example.faculty.dto;
 
 import com.example.faculty.entety.Student;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.sql.Timestamp;
 
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class StudentInfoDto {
 
     Student student;

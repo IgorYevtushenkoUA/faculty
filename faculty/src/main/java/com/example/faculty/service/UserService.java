@@ -78,4 +78,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findStudentById(id);
     }
 
+    public List<Student> findEnrolledStudentToCourse(int courseId){
+        return userRepository.findEnrolledStudentToCourse(courseId);
+    }
+
 }

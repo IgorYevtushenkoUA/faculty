@@ -7,11 +7,78 @@
 
 </head>
 <body>
-<div>
-    <label th:text="${course.getName()}"></label>
-    <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
-        <input type="submit" th:value="Enroll_ME"/>
-    </form>
+<div class="container">
+
+    <div>
+        <h1 th:text="${courseInfoDto.getCourse().getName()}"/>
+        <table class="table table-bordered border-primary">
+            <tbody>
+            <tr>
+                <td>Topic</td>
+                <th th:text="${courseInfoDto.getCourse().getTopic().getName()}"/>
+            </tr>
+
+            <tr>
+                <td>Capacity</td>
+                <th th:text="${courseInfoDto.getCourse().getCapacity()}"/>
+            </tr>
+
+            <tr>
+                <td>Semester</td>
+                <th th:text="${courseInfoDto.getCourse().getSemesterStart()}"/>
+            </tr>
+
+            <tr>
+                <td>Semester Duration</td>
+                <th th:text="${courseInfoDto.getCourse().getSemesterDuration()}"/>
+            </tr>
+
+            <tr>
+                <td>Description</td>
+                <th th:text="${courseInfoDto.getCourse().getDescription()}"/>
+            </tr>
+
+            <tr>
+                <td>Teacher</td>
+                <td th:text="${courseInfoDto.getCourse().getTeacher().getLastName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getFirstName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getSecondName()}"/>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <table class="table table-bordered table-responsive-sm">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Record time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="student,iter:${courseInfoDto.getEnrolledStudent()}">
+            <td th:text="${iter.index+1}"/>
+            <td th:text="${student.getStudent().getLastName()} + ' ' + ${student.getStudent().getFirstName()} + ' ' + ${student.getStudent().getSecondName()}"/>
+            <td th:text="${student.getStudent().getCourseNum()}"/>
+            <td th:text="${student.getRecordingTime()}"/>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:if="${canEnroll}">
+        <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">ENROLL</button>
+        </form>
+    </div>
+    <div th:if="!${canEnroll}">
+        <a class="btn btn-primary btn-lg btn-block" href="/login" role="button">Login</a>
+    </div>
 </div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

@@ -58,7 +58,7 @@
                 <tbody>
                 <tr th:each="course : ${courses.page}">
                     <td th:text="${course.getId()}">id</td>
-                    <td th:text="${course.getName()}" />
+                    <td ><a th:href="@{/courses/{id} (id=${course.getId})}" th:text="${course.getName()}"/></td>
                     <td th:text="${course.getDescription()}" />
                     <td th:text="${course.getCapacity()}" />
                     <td th:text="${course.getSemesterStart()}" />

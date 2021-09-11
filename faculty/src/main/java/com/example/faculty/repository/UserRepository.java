@@ -36,4 +36,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u where u.id=:studentId")
     Student findStudentById(@Param("studentId") int studentId);
+
+    @Query("select s " +
+            "from User s " +
+            "inner join StudentHasCourse shc on shc.studentCourseId.studentId=s.id " +
+            "where shc.studentCourseId.courseId=:courseId ")
+    List<Student> findEnrolledStudentToCourse(@Param("courseId") int courseId);
 }

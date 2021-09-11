@@ -1,6 +1,10 @@
 package com.example.faculty.controller;
 
+import com.example.faculty.dto.CourseInfoDto;
+import com.example.faculty.dto.StudentInfoDto;
 import com.example.faculty.entety.Course;
+import com.example.faculty.entety.Student;
+import com.example.faculty.entety.StudentHasCourse;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.StudentHasCourseService;
 import com.example.faculty.service.UserService;
@@ -8,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +20,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -57,8 +65,9 @@ public class CourseController {
     @GetMapping("/courses/{courseId}")
     public String courseGet(Model model,
                             @PathVariable("courseId") Integer courseId) {
-        model.addAttribute("course", courseService.findById(courseId));
         model.addAttribute("courseId", courseId);
+        model.addAttribute("courseInfoDto", buildCourseInfoDto(courseId));
+        model.addAttribute("canEnroll", !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser"));
         return "course";
     }
 
@@ -68,6 +77,21 @@ public class CourseController {
         int studentId = 7;
         studentHasCourseService.enrollStudentToCourse(studentId, courseId);
         return "redirect:/courses/{courseId}";
+    }
+
+    private CourseInfoDto buildCourseInfoDto(int courseId) {
+        CourseInfoDto courseInfoDto = new CourseInfoDto();
+        List<StudentInfoDto> enrolledStudent = new ArrayList<>();
+        for (StudentHasCourse studentHasCourse : studentHasCourseService.findAllStudentsByCourse(courseId)) {
+            enrolledStudent.add(
+                    new StudentInfoDto(
+                            userService.findStudentById(studentHasCourse.getStudentCourseId().getStudentId()),
+                            studentHasCourse.getMark(),
+                            studentHasCourse.getRecordingTime()));
+        }
+        courseInfoDto.setCourse(courseService.findById(courseId));
+        courseInfoDto.setEnrolledStudent(enrolledStudent);
+        return courseInfoDto;
     }
 
 }
