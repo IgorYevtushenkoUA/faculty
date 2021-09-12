@@ -3,6 +3,8 @@ package com.example.faculty.repository;
 import com.example.faculty.entety.Student;
 import com.example.faculty.entety.Teacher;
 import com.example.faculty.entety.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +27,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<Teacher> findAllTeacher();
 
     @Query("select u  from User u where u.role.id=3")
-    List<Student> findAllStudent();
+    List<Student> findAllStudents();
 
     @Query("select u " +
             "from User u " +
@@ -42,4 +44,21 @@ public interface UserRepository extends JpaRepository<User, Integer> {
             "inner join StudentHasCourse shc on shc.studentCourseId.studentId=s.id " +
             "where shc.studentCourseId.courseId=:courseId ")
     List<Student> findEnrolledStudentToCourse(@Param("courseId") int courseId);
+
+    @Query("select u " +
+            "from User u " +
+            "where u.role.id = 3 " +
+            "and lower(concat(u.lastName,' ',u.firstName,' ',u.secondName)) like lower(concat('%',:name,'%') )")
+    List<Student> findStudentsByPIB(String name);
+
+    @Query("select u from User u where u.role.id=3")
+    Page<Student> findAllStudents(Pageable pageable);
+
+    @Query("select u from " +
+            "User u " +
+            "where u.role.id=3 " +
+            "and lower(concat(u.lastName,' ',u.firstName,'',u.lastName)) like lower(concat('%',:name,'%'))")
+    Page<Student> findStudentsByPIB(@Param("name") String name, Pageable pageable);
+
+
 }

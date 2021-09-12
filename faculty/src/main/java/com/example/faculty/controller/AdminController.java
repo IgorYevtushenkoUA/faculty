@@ -1,7 +1,9 @@
 package com.example.faculty.controller;
 
 import com.example.faculty.entety.Course;
+import com.example.faculty.entety.Student;
 import com.example.faculty.entety.Teacher;
+import com.example.faculty.entety.paging.Paged;
 import com.example.faculty.enums.ROLE;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.RoleService;
@@ -42,8 +44,6 @@ public class AdminController {
     @GetMapping("/admin/teachers")
     public String teachersGet(Model model, @RequestParam(value = "name", defaultValue = "") String name) {
 
-        System.out.println("name.isEmpty()=" + name.isEmpty());
-        System.out.println("name'" + name + "'");
         List<Teacher> teachers = name.isEmpty()
                 ? userService.findAllTeacher()
                 : userService.findTeachersByPIB(name);
@@ -149,23 +149,28 @@ public class AdminController {
     }
 
     @GetMapping("/admin/students")
-    public String studentsGet() {
-        return null;
-    }
-
-    @PostMapping("/admin/students")
-    public String studentsPost() {
-        return null;
+    public String studentsGet(Model model,
+                              @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                              @RequestParam(value = "size", required = false, defaultValue = "2") int size,
+                              @RequestParam(value = "name", defaultValue = "") String name) {
+        model.addAttribute("name", name);
+        model.addAttribute("students", userService.getStudentsPage(name, pageNumber, size));
+        return "/admin/studentList";
     }
 
     @GetMapping("/admin/students/{id}")
-    public String studentGet() {
-        return null;
+    public String studentGet(Model model, @PathVariable("id") int id) {
+        model.addAttribute("student", userService.findStudentById(id));
+        return "/admin/studentInfo";
     }
 
     @PostMapping("/admin/students/{id}")
-    public String studentPost() {
-        return null;
+    public String studentPost(@PathVariable("id") int id) {
+        Student student = userService.findStudentById(id);
+        student.setEnable(!student.isEnable());
+        userService.save(student);
+        return "redirect:/admin/students";
     }
+
 
 }

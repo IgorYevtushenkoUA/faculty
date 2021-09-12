@@ -6,10 +6,15 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
-це сторінка інформації про студента - поки не знаю для чого вона та як її оформити
-фільтр треба
-можливо предмет-оцінка
-блокувати, розблокувати
+<div class="container">
+
+    <h1 th:text="${student.getLastName()} + ' ' + ${student.getFirstName()} + ' ' + ${student.getSecondName()}"/>
+    <form th:action="@{/admin/students/{id} (id=${student.getId()})}" method="post">
+        <button type="submit"
+                class="btn"
+                th:text="${student.isEnable()} ? 'Розблокувати' : 'Блокувати'"/>
+    </form>
+</div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>

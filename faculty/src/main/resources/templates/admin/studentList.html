@@ -6,8 +6,66 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
-це сторінка де весь список студентів
-тут також є фільтр
+
+<div class="container">
+    <div class="mt-5">
+        <form th:action="@{/admin/students}" method="get">
+            <div class="input-group p-1">
+                <span class="input-group-text">Name :</span>
+                <input class="form-control" aria-label="With textarea" type="text" name="name"
+                       placeholder="ПІБ студента">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">Search</button>
+        </form>
+    </div>
+    <div class="mt-5">
+        <table class="table border-primary table-bordered ">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Course</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="student,iter:${students.page}">
+                <td th:text="iterator"/>
+                <td><a th:href="@{/admin/students/{studentId}(studentId=${student.getId()})}"
+                       th:text="${student.getLastName()} + ' ' + ${student.getFirstName()} + ' ' + ${student.getSecondName()}"/>
+                </td>
+                <td th:text="${student.getCourseNum()}"/>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <nav aria-label="Page navigation" class="paging">
+        <ul class="pagination" th:if="${students.page.totalPages > 1}">
+            <li class="page-item" th:classappend="${!students.paging.isPrevEnabled()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/admin/students?pageNumber=' + ${students.paging.pageNumber - 1} + '&name='+${name} }"
+                   tabindex="-1">Previous</a>
+            </li>
+            <th:block th:each="item : ${students.paging.getItems()}">
+                <li class="page-item" th:classappend="${item.index == students.paging.pageNumber? 'active' : ''}"
+                    th:if="${item.pageItemType.name() == 'PAGE'}">
+                    <a class="page-link"
+                       th:href="@{'/admin/students?pageNumber=' + ${item.index} + '&name='+${name}}"
+                       th:text="${item.index}"></a>
+                </li>
+                <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                    <a class="page-link" href="#">...</a>
+                </li>
+            </th:block>
+            <li class="page-item" th:classappend="${!students.paging.isNextEnabled()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{'/admin/students?pageNumber=' + ${students.paging.pageNumber + 1} + '&name='+${name}}">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+
+</div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
