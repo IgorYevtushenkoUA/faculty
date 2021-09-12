@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -47,12 +48,22 @@ public class TeacherController {
         return "/teacher/courseInfo";
     }
 
-    @GetMapping("/teacher/{courseId}/student/{studentId}")
+    @GetMapping("/hello")
+    public String hello(){
+        return "redirect:/courses";
+    }
+
+    @PostMapping("/teacher/{courseId}/student/{studentId}")
     public String teacherCourseStudentInfoGet(Model model,
-                                             @PathVariable("courseId") Integer courseId,
-                                             @PathVariable("studentId") Integer studentId) {
+                                              @PathVariable("courseId") Integer courseId,
+                                              @PathVariable("studentId") Integer studentId,
+                                              @RequestParam("mark") int mark) {
+
+        StudentHasCourse studentHasCourse = studentHasCourseService.findByStudentAndCourse(studentId, courseId);
+        studentHasCourse.setMark(mark);
+        studentHasCourseService.save(studentHasCourse);
         model.addAttribute("student", userService.findStudentInfoByIdAndCourseId(courseId, studentId));
-        return "/teacher/studentInfo";
+        return "redirect:/teacher/{courseId}";
     }
 
     private CourseStudentsDto buildCourseStudentsDto(int teacherId, int courseId, int year) {
@@ -68,6 +79,7 @@ public class TeacherController {
             studentInfoDto.setRecordingTime(studentHasCourse.getRecordingTime());
             studentInfoDtoList.add(studentInfoDto);
         }
+        courseStudentsDto.setCourse(courseService.findById(courseId));
         courseStudentsDto.setStudents(studentInfoDtoList);
         return courseStudentsDto;
     }

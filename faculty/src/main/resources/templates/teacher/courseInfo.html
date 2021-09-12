@@ -33,15 +33,17 @@
             </thead>
             <tbody>
             <tr th:each="student,iter:${courseStudentsDto.getStudents()}">
-
-                <td th:text="${iter.index+1}"/>
-                <td th:text="${student.getStudent().getLastName()} + ' ' + ${student.getStudent().getFirstName()} + ' ' + ${student.getStudent().getSecondName()}"/>
-                <td th:text="${student.getStudent().getCourseNum()}"/>
-                <td th:text="${student.getRecordingTime()}"/>
-                <td th:text="${student.getMark()}"/>
-                <td>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </td>
+                <form th:action="@{/teacher/{courseId}/student/{studentId}(courseId=${courseStudentsDto.getCourse().getId()}, studentId=${student.getStudent().getId()})}"
+                      method="post">
+                    <td th:text="${iter.index+1}"/>
+                    <td th:text="${student.getStudent().getLastName()} + ' ' + ${student.getStudent().getFirstName()} + ' ' + ${student.getStudent().getSecondName()}"/>
+                    <td th:text="${student.getStudent().getCourseNum()}"/>
+                    <td th:text="${student.getRecordingTime()}"/>
+                    <td><input type="number" th:value="${student.getMark()}" name="mark"></td>
+                    <td>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </td>
+                </form>
             </tr>
             </tbody>
         </table>

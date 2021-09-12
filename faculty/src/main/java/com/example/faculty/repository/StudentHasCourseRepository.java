@@ -28,4 +28,10 @@ public interface StudentHasCourseRepository extends JpaRepository<StudentHasCour
     Integer getMarkForCourse(@Param("studentId") int studentId,
                              @Param("courseId") int courseId);
 
+    @Query("select shc " +
+            "from StudentHasCourse shc " +
+            "where shc.studentCourseId.studentId=:studentId " +
+            "and shc.studentCourseId.courseId=:courseId")
+    StudentHasCourse findByStudentAndCourse(@Param("studentId") int studentId, @Param("courseId") int courseId);
+
 }

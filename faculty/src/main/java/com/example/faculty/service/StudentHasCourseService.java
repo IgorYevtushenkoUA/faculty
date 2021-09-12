@@ -44,4 +44,12 @@ public class StudentHasCourseService {
         return studentHasCourseRepository.getMarkForCourse(studentId, courseId);
     }
 
+    public void save(StudentHasCourse studentHasCourse){
+        studentHasCourseRepository.save(studentHasCourse);
+    }
+
+    public StudentHasCourse findByStudentAndCourse(int studentId, int courseId){
+        return studentHasCourseRepository.findByStudentAndCourse(studentId, courseId);
+    }
+
 }
