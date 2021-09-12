@@ -6,41 +6,42 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
-<form th:action="@{/register}" method="post" th:object="${userForm}">
+<div class="container mt-5">
+    <form th:action="@{/register}" method="post" th:object="${userForm}">
 
-    <div>
-        <label th:text="FirstName"/>
-        <input type="text" th:field="*{firstName}">
-    </div>
+        <div class="input-group p-1">
+            <span class="input-group-text">First Name :</span>
+            <input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter First Name">
+        </div>
 
-    <div>
-        <label th:text="SecondName"/>
-        <input type="text" th:field="*{secondName}">
-    </div>
+        <div class="input-group p-1">
+            <span class="input-group-text">Second Name :</span>
+            <input type="text" class="form-control" th:field="*{secondName}" placeholder="Enter Second Name">
+        </div>
 
-    <div>
-        <label th:text="LastName"/>
-        <input type="text" th:field="*{lastName}">
-    </div>
+        <div class="input-group p-1">
+            <span class="input-group-text">Last Name : </span>
+            <input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter Last Name">
+        </div>
 
-    <div>
-        <label th:text="Email"/>
-        <input type="email" th:field="*{email}">
-    </div>
+        <div class="input-group p-1">
+            <span class="input-group-text">Email :</span>
+            <input type="email" class="form-control" th:field="*{email}" placeholder="Enter Email">
+        </div>
 
-    <div>
-        <label th:text="Password"/>
-        <input type="password" th:field="*{password}">
-    </div>
+        <div class="input-group p-1">
+            <span class="input-group-text">Password :</span>
+            <input type="password" class="form-control" th:field="*{password}" placeholder="Enter Password">
+        </div>
 
-    <div>
-        <label th:text="Course"/>
-        <input type="number" th:field="*{courseNum}">
-    </div>
+        <div class="input-group p-1">
+            <span class="input-group-text">Course :</span>
+            <input type="number" th:field="*{courseNum}" class="form-control">
+        </div>
 
-    <input type="submit" th:value="Register">
-</form>
-
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+    </form>
+</div>
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>

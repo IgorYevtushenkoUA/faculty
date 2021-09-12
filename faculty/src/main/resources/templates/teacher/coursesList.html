@@ -6,14 +6,26 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
-page where all teachers courses
-<div th:each="course:${courses}">
-    <div >
-        <h2 th:text="${course.getName()}"/>
-        <p th:text="${course.getDescription()}"/>
-    </div>
+<div class="container mt-5">
+    <h1 th:text="${teacher.getLastName()} + ' ' + ${teacher.getFirstName()} + ' ' + ${teacher.getSecondName()}"/>
+
+    <table class="table border-primary table-bordered">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Course Name</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course,iter:${courses}">
+            <td th:text="${iter.index+1}"/>
+            <td><a th:href="@{/teacher/{id} (id=${course.getId()})}" th:text="${course.getName()}"></a></td>
+            <td th:text="${course.getDescription()}"/>
+        </tr>
+        </tbody>
+    </table>
 </div>
-todo add another important information
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>

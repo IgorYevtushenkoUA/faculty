@@ -3,10 +3,12 @@ package com.example.faculty.controller;
 import com.example.faculty.dto.CourseStudentsDto;
 import com.example.faculty.dto.StudentInfoDto;
 import com.example.faculty.entety.StudentHasCourse;
+import com.example.faculty.entety.Teacher;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.StudentHasCourseService;
 import com.example.faculty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,33 +30,25 @@ public class TeacherController {
     @Autowired
     StudentHasCourseService studentHasCourseService;
 
-    // для чого ця сторінка, якщо вся інфа на teacher/{teacherId}/courses -> о суті зайва та непотрібна сторінка
-    @GetMapping("/teacher/{id}")
-    public String teacherGet(Model model,
-                             @PathVariable("id") Integer id) {
-        model.addAttribute("id", id);
-        return "/teacher/teacherPersonalPage";
-    }
-
-    @GetMapping("/teacher/{teacherId}/courses")
-    public String teacherCoursesGet(Model model,
-                                    @PathVariable("teacherId") Integer teacherId) {
-        model.addAttribute("teacherId", teacherId);
-        model.addAttribute("courses", courseService.findAllTeacherCourses(teacherId));
+    @GetMapping("/teacher")
+    public String teacherCoursesGet(Model model) {
+        Teacher teacher = (Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("courses", courseService.findAllTeacherCourses(teacher.getId()));
         return "/teacher/coursesList";
     }
 
-    @GetMapping("/teacher/{teacherId}/courses/{courseId}")
+    @GetMapping("/teacher/{courseId}")
     public String teacherCourseInfoGet(Model model,
-                                       @PathVariable("teacherId") Integer teacherId,
                                        @PathVariable("courseId") Integer courseId,
                                        @RequestParam(value = "year", defaultValue = "2021") Integer year) {
-        model.addAttribute("courseStudentsDto", buildCourseStudentsDto(teacherId, courseId, year));
+        Teacher teacher = (Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("courseStudentsDto", buildCourseStudentsDto(teacher.getId(), courseId, year));
         return "/teacher/courseInfo";
     }
 
-    @GetMapping("/teacher/{teacherId}/courses/{courseId}/student/{studentId}")
-    public String teacherCoureStudentInfoGet(Model model,
+    @GetMapping("/teacher/{courseId}/student/{studentId}")
+    public String teacherCourseStudentInfoGet(Model model,
                                              @PathVariable("courseId") Integer courseId,
                                              @PathVariable("studentId") Integer studentId) {
         model.addAttribute("student", userService.findStudentInfoByIdAndCourseId(courseId, studentId));
@@ -66,8 +60,8 @@ public class TeacherController {
         courseStudentsDto.setTeacherId(teacherId);
         courseStudentsDto.setYear(year);
         List<StudentInfoDto> studentInfoDtoList = new ArrayList<>();
-        List<StudentHasCourse> studentHasCourseList = studentHasCourseService.findAllStudentsByCourseAndYear(courseId, year);
-        for(StudentHasCourse studentHasCourse : studentHasCourseList){
+        List<StudentHasCourse> studentHasCourseList = studentHasCourseService.findAllStudentsByCourseAndYearAndName(courseId, year);
+        for (StudentHasCourse studentHasCourse : studentHasCourseList) {
             StudentInfoDto studentInfoDto = new StudentInfoDto();
             studentInfoDto.setStudent(userService.findStudentById(studentHasCourse.getStudentCourseId().getStudentId()));
             studentInfoDto.setMark(studentHasCourse.getMark());

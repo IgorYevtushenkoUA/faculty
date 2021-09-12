@@ -32,8 +32,8 @@ public class StudentHasCourseService {
         studentHasCourseRepository.save(shc);
     }
 
-    public List<StudentHasCourse> findAllStudentsByCourseAndYear(int courseId, int year){
-        return studentHasCourseRepository.findAllStudentsByCourseAndYear(courseId, year);
+    public List<StudentHasCourse> findAllStudentsByCourseAndYearAndName(int courseId, int year){
+        return studentHasCourseRepository.findAllStudentsByCourseAndYearAndName(courseId, year);
     }
 
     public List<StudentHasCourse> findAllStudentsByCourse(int courseId){
