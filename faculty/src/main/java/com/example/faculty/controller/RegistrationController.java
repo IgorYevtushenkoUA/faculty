@@ -1,7 +1,6 @@
 package com.example.faculty.controller;
 
 import com.example.faculty.entety.Student;
-import com.example.faculty.entety.User;
 import com.example.faculty.enums.ROLE;
 import com.example.faculty.service.RoleService;
 import com.example.faculty.service.UserService;

@@ -3,7 +3,6 @@ package com.example.faculty.controller;
 import com.example.faculty.dto.StudentCourseInfoDto;
 import com.example.faculty.entety.Course;
 import com.example.faculty.entety.Student;
-import com.example.faculty.entety.User;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.StudentHasCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class StudentController {
         model.addAttribute("courses", buildStudentCourseInfoDto(student.getId(),
                 courseService.findAllStudentCoursesByType(student.getId(),type)));
 
-        return "/student/studentPersonalPage";
+        return "/users/student/studentPersonalPage";
     }
 
     private List<StudentCourseInfoDto> buildStudentCourseInfoDto(int studentId, List<Course> courses){

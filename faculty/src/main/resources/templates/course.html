@@ -7,10 +7,16 @@
 
 </head>
 <body>
-<div class="container">
 
-    <div>
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-center">
         <h1 th:text="${courseInfoDto.getCourse().getName()}"/>
+    </div>
+
+    <div class="mt-2">
         <table class="table table-bordered border-primary">
             <tbody>
             <tr>

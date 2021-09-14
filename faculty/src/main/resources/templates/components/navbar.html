@@ -1,0 +1,48 @@
+<div th:fragment="navbar"
+     class="navbar navbar-light bg-light">
+
+    <div class="d-flex justify-content-lg-start">
+        <a class="navbar-brand" href="/courses">FACULTY</a>
+        <ul class="nav ">
+            <li class="nav-item active">
+                <a class="nav-link" href="/courses">Дисципліни</a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${role}=='ROLE_ADMIN'"
+         class=" d-flex justify-content-center">
+        <ul class="nav  justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/students">Студенти</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/teachers">Вчителі</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="d-flex justify-content-end ">
+        <div th:if="${role}=='ROLE_GUEST'">
+            <ul class="nav  justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+            </ul>
+        </div>
+        <div th:if="${role}!='ROLE_GUEST'">
+            <ul class="nav  justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">MY PAGE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">LOGOUT</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>

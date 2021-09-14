@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<div th:insert="components/navbar :: navbar"/>
+
 <div class="container mt-5">
     <div class="mt-2">
         <form th:action="@{/teacher/{courseId} (courseId=${courseId})}" method="get">

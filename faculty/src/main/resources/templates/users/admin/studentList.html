@@ -7,7 +7,9 @@
 </head>
 <body>
 
-<div class="container">
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
     <div class="mt-5">
         <form th:action="@{/admin/students}" method="get">
             <div class="input-group p-1">

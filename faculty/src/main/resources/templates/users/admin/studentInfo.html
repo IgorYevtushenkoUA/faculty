@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+
+    <h1 th:text="${student.getLastName()} + ' ' + ${student.getFirstName()} + ' ' + ${student.getSecondName()}"/>
+    <form th:action="@{/admin/students/{id} (id=${student.getId()})}" method="post">
+        <button type="submit"
+                class="btn"
+                th:text="${student.isEnable()} ? 'Розблокувати' : 'Блокувати'"/>
+    </form>
+</div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

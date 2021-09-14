@@ -15,7 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByEmail(String email);
 
-    Teacher findTeacherById(int id);
+    @Query("select u from User u where u.id=:id")
+    Teacher findTeacherById(@Param("id") int id);
 
     @Query("select u from User u where lower(concat(u.lastName,' ',u.firstName,' ',u.secondName))=lower(:pib) and u.role.id=2")
     Teacher findTeacherByPIB(String pib);

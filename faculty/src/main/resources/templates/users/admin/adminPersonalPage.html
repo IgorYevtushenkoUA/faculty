@@ -6,14 +6,14 @@
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
-<div class="container">
 
-    <h1 th:text="${student.getLastName()} + ' ' + ${student.getFirstName()} + ' ' + ${student.getSecondName()}"/>
-    <form th:action="@{/admin/students/{id} (id=${student.getId()})}" method="post">
-        <button type="submit"
-                class="btn"
-                th:text="${student.isEnable()} ? 'Розблокувати' : 'Блокувати'"/>
-    </form>
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+    <div class="mt-5 text-center">
+        <h3>Створити</h3>
+    </div>
+    <div th:insert="components/creationPanel :: creationPanel" />
 </div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>

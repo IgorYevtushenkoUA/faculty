@@ -3,7 +3,6 @@ package com.example.faculty.controller;
 import com.example.faculty.entety.Course;
 import com.example.faculty.entety.Student;
 import com.example.faculty.entety.Teacher;
-import com.example.faculty.entety.paging.Paged;
 import com.example.faculty.enums.ROLE;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.RoleService;
@@ -38,7 +37,7 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String adminGet() {
-        return "admin/adminPersonalPage";
+        return "/users/admin/adminPersonalPage";
     }
 
     @GetMapping("/admin/teachers")
@@ -49,16 +48,19 @@ public class AdminController {
                 : userService.findTeachersByPIB(name);
 
         model.addAttribute("teachers", teachers);
-        return "admin/teachersList";
+        return "/users/admin/teachersList";
     }
 
     @GetMapping("/admin/teachers/{teacherId}")
     public String teacherGet(Model model,
-                             @PathVariable("teacherId") Integer teacherId) {
+                             @PathVariable("teacherId") int teacherId) {
+        System.out.println("-----------");
+        System.out.println(userService.findById(teacherId));
+        System.out.println("-----------");
         model.addAttribute("courses", courseService.findAllTeacherCourses(teacherId));
         model.addAttribute("coursesList", courseService.findAll());
-        model.addAttribute("teacherId", teacherId);
-        return "/admin/teacherInfo";
+        model.addAttribute("teacher", userService.findTeacherById(teacherId));
+        return "/users/admin/teacherInfo";
     }
 
     @PostMapping("/admin/teachers/{teacherId}")
@@ -79,7 +81,7 @@ public class AdminController {
     @GetMapping("/admin/teachers/register")
     public String registerTeacherGet(Model model) {
         model.addAttribute("teacherForm", new Teacher());
-        return "admin/teacherRegister";
+        return "/users/admin/create/teacherRegister";
     }
 
     @PostMapping("/admin/teachers/register")
@@ -88,22 +90,28 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    // todo -> repeated code
     @GetMapping("/admin/courses")
     public String coursesGet(Model model,
-                             @PageableDefault(size = DEFAULT_PAGE_SIZE) Pageable pageable,
                              @RequestParam(value = "courseName", defaultValue = "") String courseName,
-                             @RequestParam(value = "duration", defaultValue = "-1") Integer duration,
-                             @RequestParam(value = "capacity", defaultValue = "-1") Integer capacity,
+                             @RequestParam(value = "duration", defaultValue = "0") Integer duration,
+                             @RequestParam(value = "capacity", defaultValue = "0") Integer capacity,
                              @RequestParam(value = "topic", defaultValue = "") String topic,
-                             @RequestParam(value = "teacher", defaultValue = "") String teacher) {
-        Page<Course> pages = courseService.setCourses(courseName, duration, capacity, topic, teacher, pageable);
-        model.addAttribute("courses", pages.getContent());
-        return "admin/coursesList";
+                             @RequestParam(value = "teacher", defaultValue = "") String teacher,
+                             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+                             @RequestParam(value = "size", required = false, defaultValue = "2") int size) {
+        model.addAttribute("courseName", courseName);
+        model.addAttribute("duration", duration);
+        model.addAttribute("capacity", capacity);
+        model.addAttribute("topic", topic);
+        model.addAttribute("teacher", teacher);
+        model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size));
+        return "/users/admin/coursesList";
     }
 
     @GetMapping("/admin/courses/create")
-    public String createCourseGet(Model model) {
-        return "admin/courseCreate";
+    public String createCourseGet() {
+        return "/users/admin/create/courseCreate";
     }
 
     @PostMapping("/admin/courses/create")
@@ -131,7 +139,7 @@ public class AdminController {
     public String courseInfoGet(Model model,
                                 @PathVariable("id") Integer id) {
         model.addAttribute("course", courseService.findById(id));
-        return "/admin/courseInfo";
+        return "/users/admin/courseInfo";
     }
 
     @PostMapping(value = "/admin/courses/{id}", params = "action=save")
@@ -155,13 +163,13 @@ public class AdminController {
                               @RequestParam(value = "name", defaultValue = "") String name) {
         model.addAttribute("name", name);
         model.addAttribute("students", userService.getStudentsPage(name, pageNumber, size));
-        return "/admin/studentList";
+        return "/users/admin/studentList";
     }
 
     @GetMapping("/admin/students/{id}")
     public String studentGet(Model model, @PathVariable("id") int id) {
         model.addAttribute("student", userService.findStudentById(id));
-        return "/admin/studentInfo";
+        return "/users/admin/studentInfo";
     }
 
     @PostMapping("/admin/students/{id}")
@@ -172,5 +180,15 @@ public class AdminController {
         return "redirect:/admin/students";
     }
 
+    @GetMapping("/admin/students/create")
+    public String studentRegisterGet(Model model){
+        model.addAttribute("userForm", new Student());
+        return "/users/admin/create/studentRegister";
+    }
+
+    @PostMapping("/admin/students/create")
+    public String studentRegisterPost(){
+        return "redirect:/admin/students";
+    }
 
 }

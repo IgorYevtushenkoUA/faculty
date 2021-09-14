@@ -139,6 +139,7 @@ public class CourseService {
         return course;
     }
 
+
     public Course addTeacherToCourse(int courseId, int teacherId){
         Course course = courseRepository.findById(courseId);
         if (course != null)

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,6 +64,8 @@ public class UserService implements UserDetailsService {
     public Teacher findTeacherByPIB(String PIB) {
         return userRepository.findTeacherByPIB(PIB);
     }
+
+    public Teacher findTeacherById(int id){return userRepository.findTeacherById(id);}
 
     public List<Teacher> findTeachersByPIB(String PIB) {
         return userRepository.findTeachersByPIB(PIB);

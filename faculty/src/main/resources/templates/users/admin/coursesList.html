@@ -2,17 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Courses</title>
+    <title>Title</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-
 </head>
 <body>
 
 <div th:insert="components/navbar :: navbar"/>
 
 <div class="container p-3">
-
-    <form action="/courses" method="get">
+    <form action="/admin/courses" method="get">
         <div class="">
             <div class="input-group p-1">
                 <span class="input-group-text">Course :</span>
@@ -43,7 +41,6 @@
         <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
     </form>
 
-    <!--    <div class="row">-->
     <div class="col-lg-10 mt-5 mb-5">
         <table class="table table-bordered table-responsive-sm">
             <thead>
@@ -74,14 +71,14 @@
             <ul class="pagination" th:if="${courses.page.totalPages > 1}">
                 <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                       th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
                        tabindex="-1">Previous</a>
                 </li>
                 <th:block th:each="item : ${courses.paging.getItems()}">
                     <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
                         th:if="${item.pageItemType.name() == 'PAGE'}">
                         <a class="page-link"
-                           th:href="@{'/courses?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                           th:href="@{'/admin/courses?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
                            th:text="${item.index}"></a>
                     </li>
                     <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
@@ -90,17 +87,17 @@
                 </th:block>
                 <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                       th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
                 </li>
             </ul>
         </nav>
     </div>
-    <!--    </div>-->
 </div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
 
 </body>
 </html>

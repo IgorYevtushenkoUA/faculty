@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+
+    <div th:insert="components/creationPanel :: creationPanel"/>
+    <div class="mt-5">
+        <form th:action="@{/admin/courses/create}" method="post">
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Course Name :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="name"
+                       placeholder="Course Name">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Topic :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="topic"
+                       placeholder="Topic">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Capacity :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="capacity"
+                       placeholder="Capacity">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Semester Start :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="semesterStart"
+                       placeholder="Semester Start">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Duration :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="semesterDuration"
+                       placeholder="Semester Duration">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Description :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="description"
+                       placeholder="Description">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Teacher PIB :</span>
+                <input class="form-control" aria-label="With textarea" type="text" th:name="teacherName"
+                       placeholder="Teacher PIB">
+            </div>
+            <input type="submit" th:value="Create">
+        </form>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

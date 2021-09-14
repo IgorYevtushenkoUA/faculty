@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+    <div class="mt-2">
+        <form th:action="@{/admin/teachers}" th:method="get">
+            <div class="input-group p-1">
+                <span class="input-group-text">Teacher PIB :</span>
+                <input class="form-control" aria-label="With textarea" type="number" name="name"
+                       placeholder="PIB">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Search</button>
+        </form>
+    </div>
+
+    <div class="mt-5">
+        <table class="table border-primary table-bordered">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>PIB</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="t,iter:${teachers}">
+                <td th:text="${iter.index+1}"/>
+                <td>
+                    <a th:href="@{/admin/teachers/{teacherId} (teacherId=${t.getId()})}"  th:text="${t.getLastName()} + ' ' + ${t.getFirstName()} + ' ' + ${t.getSecondName()}"></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <button class="btn btn-light btn-lg btn-block"><a th:href="@{/admin/teachers/register}">Додати викладача</a>
+        </button>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

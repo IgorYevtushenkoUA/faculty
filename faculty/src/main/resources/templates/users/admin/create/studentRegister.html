@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+</head>
+<body>
+
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+
+    <div th:insert="components/creationPanel :: creationPanel"/>
+
+    <!--        <div th:insert="components/registerStudentForm :: registerStudentForm"/>-->
+
+    <div class="mt-5">
+        <form th:action="@{/register}" method="post" th:object="${userForm}">
+
+            <div class="input-group p-1">
+                <span class="input-group-text">First Name :</span>
+                <input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter First Name">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Second Name :</span>
+                <input type="text" class="form-control" th:field="*{secondName}" placeholder="Enter Second Name">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Last Name : </span>
+                <input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter Last Name">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Email :</span>
+                <input type="email" class="form-control" th:field="*{email}" placeholder="Enter Email">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Password :</span>
+                <input type="password" class="form-control" th:field="*{password}" placeholder="Enter Password">
+            </div>
+
+            <div class="input-group p-1">
+                <span class="input-group-text">Course :</span>
+                <input type="number" th:field="*{courseNum}" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
+        </form>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>

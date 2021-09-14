@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div th:insert="components/navbar :: navbar"/>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-center">
+        <h1 th:text="${teacher.getLastName()} + ' ' + ${teacher.getFirstName()} + ' ' + ${teacher.getSecondName()}"/>
+    </div>
+
+    <table class="table border-primary table-bordered">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>Course Name</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course, iter:${courses}">
+            <td th:text="${iter.index+1}"/>
+            <td th:text="${course.getName()}"/>
+            <td>
+                <button class="btn btn-danger">
+                    <a th:href="@{/admin/teachers/{teacherId}/course-delete/{courseId} (teacherId=${teacher.getId()}, courseId=${course.getId()})}">
+                        DELETE
+                    </a>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="input-group">
+        <form th:action="@{/admin/teachers/{teacherId} (teacherId=${teacher.getId()})}" method="post">
+            <select th:name="courseId" class="form-select form-select-lg mb-3">
+                <option
+                        th:each="course:${coursesList}"
+                        th:value="${course.getId()}"
+                        th:text="${course.getName()}"/>
+            </select>
+            <input type="submit" class="btn btn-primary">ADD Course</input>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+
+</body>
+</html>

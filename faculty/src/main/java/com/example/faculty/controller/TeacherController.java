@@ -36,7 +36,7 @@ public class TeacherController {
         Teacher teacher = (Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("teacher", teacher);
         model.addAttribute("courses", courseService.findAllTeacherCourses(teacher.getId()));
-        return "/teacher/coursesList";
+        return "/users/teacher/coursesList";
     }
 
     @GetMapping("/teacher/{courseId}")
@@ -45,7 +45,7 @@ public class TeacherController {
                                        @RequestParam(value = "year", defaultValue = "2021") Integer year) {
         Teacher teacher = (Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("courseStudentsDto", buildCourseStudentsDto(teacher.getId(), courseId, year));
-        return "/teacher/courseInfo";
+        return "/users/teacher/courseInfo";
     }
 
     @GetMapping("/hello")
