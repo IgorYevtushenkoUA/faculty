@@ -38,7 +38,7 @@ public class RegistrationController {
             model.addAttribute("userError", "Registration error");
             return "register";
         }
-        return "redirect:/courses";
+        return "redirect:/";
     }
 
 }

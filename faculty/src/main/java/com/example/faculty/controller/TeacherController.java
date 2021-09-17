@@ -48,11 +48,6 @@ public class TeacherController {
         return "/users/teacher/courseInfo";
     }
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "redirect:/courses";
-    }
-
     @PostMapping("/teacher/{courseId}/student/{studentId}")
     public String teacherCourseStudentInfoGet(Model model,
                                               @PathVariable("courseId") Integer courseId,

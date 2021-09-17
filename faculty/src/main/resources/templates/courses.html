@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Courses</title>
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
-
 </head>
 <body>
 
@@ -12,7 +11,7 @@
 
 <div class="container p-3">
 
-    <form action="/courses" method="get">
+    <form action="/" method="get">
         <div class="">
             <div class="input-group p-1">
                 <span class="input-group-text">Course :</span>
@@ -60,7 +59,7 @@
             <tbody>
             <tr th:each="course : ${courses.page}">
                 <td th:text="${course.getId()}">id</td>
-                <td><a th:href="@{/courses/{id} (id=${course.getId})}" th:text="${course.getName()}"/></td>
+                <td><a th:href="@{//{id} (id=${course.getId})}" th:text="${course.getName()}"/></td>
                 <td th:text="${course.getDescription()}"/>
                 <td th:text="${course.getCapacity()}"/>
                 <td th:text="${course.getSemesterStart()}"/>
@@ -74,14 +73,14 @@
             <ul class="pagination" th:if="${courses.page.totalPages > 1}">
                 <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                       th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
                        tabindex="-1">Previous</a>
                 </li>
                 <th:block th:each="item : ${courses.paging.getItems()}">
                     <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
                         th:if="${item.pageItemType.name() == 'PAGE'}">
                         <a class="page-link"
-                           th:href="@{'/courses?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                           th:href="@{'/?pageNumber=' + ${item.index} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
                            th:text="${item.index}"></a>
                     </li>
                     <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
@@ -90,7 +89,7 @@
                 </th:block>
                 <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                       th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
                 </li>
             </ul>
         </nav>

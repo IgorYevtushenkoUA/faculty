@@ -37,7 +37,7 @@ public class CourseController {
     @Autowired
     StudentHasCourseService studentHasCourseService;
 
-    @GetMapping("/courses")
+    @GetMapping("/")
     public String coursesGet(
             Model model,
             @RequestParam(value = "courseName", defaultValue = "") String courseName,
