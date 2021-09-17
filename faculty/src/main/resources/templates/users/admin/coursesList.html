@@ -21,12 +21,12 @@
             <div class="input-group p-1">
                 <span class="input-group-text">Duration :</span>
                 <input class="form-control" aria-label="With textarea" type="number" name="duration"
-                       placeholder="Тривалість">
+                       placeholder="Тривалість" th:min="1" th:max="2">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Capacity :</span>
                 <input class="form-control" aria-label="With textarea" type="number" name="capacity"
-                       placeholder="Кількість студентів">
+                       placeholder="Кількість студентів" th:min="10" th:max="150">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Topic :</span>

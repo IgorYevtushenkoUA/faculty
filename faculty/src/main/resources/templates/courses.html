@@ -18,6 +18,8 @@
                 <input type="radio" class="btn-check" name="sortType" id="success-outlined" autocomplete="off"
                        checked hidden/>
 
+                <input class="form-control" aria-label="With textarea" type="text" name="courseName"
+                       placeholder="Назва дисципліни">
 
                 <div onclick="() => {}">
                     <input id="asc" type="radio" name="sortType" th:value="ASC" th:checked="${sortType == 'ASC'}" hidden/>
@@ -28,20 +30,17 @@
                     <input id="desc" type="radio" name="sortType" th:value="DESC" th:checked="${sortType == 'DESC'}" hidden/>
                     <label for="desc" id="descl" th:class="${classes.get(1)}" onclick="setDESC()">DESC</label><br>
                 </div>
-
-                <input class="form-control" aria-label="With textarea" type="text" name="courseName"
-                       placeholder="Назва дисципліни">
             </div>
 
             <div class="input-group p-1">
                 <span class="input-group-text">Duration :</span>
                 <input class="form-control" aria-label="With textarea" type="number" name="duration"
-                       placeholder="Тривалість">
+                       placeholder="Тривалість" th:min="1" th:max="2">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Capacity :</span>
                 <input class="form-control" aria-label="With textarea" type="number" name="capacity"
-                       placeholder="Кількість студентів">
+                       placeholder="Кількість студентів" th:min="10" th:max="150">
             </div>
             <div class="input-group p-1">
                 <span class="input-group-text">Topic :</span>

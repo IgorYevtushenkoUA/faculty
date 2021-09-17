@@ -28,7 +28,7 @@
 
     <div class="input-group p-1">
         <span class="input-group-text">Course :</span>
-        <input type="number" th:field="*{courseNum}" class="form-control">
+        <input type="number" th:field="*{courseNum}" class="form-control" th:min="1" th:max="4">
     </div>
 
     <button type="submit" class="btn btn-primary btn-lg btn-block">Register</button>
