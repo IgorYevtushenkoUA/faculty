@@ -16,47 +16,47 @@
         <form th:action="@{/admin/courses/create}" method="post">
 
             <div class="input-group p-1">
-                <span class="input-group-text">Course Name :</span>
+                <span class="input-group-text" th:text="#{courseCreate.courseName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="name"
                        placeholder="Course Name">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Topic :</span>
+                <span class="input-group-text" th:text="#{courseCreate.topic}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="topic"
                        placeholder="Topic">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Capacity :</span>
+                <span class="input-group-text" th:text="#{courseCreate.capacity}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="capacity"
                        placeholder="Capacity">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Semester Start :</span>
+                <span class="input-group-text" th:text="#{courseCreate.semesterStart}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="semesterStart"
                        placeholder="Semester Start">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Duration :</span>
+                <span class="input-group-text" th:text="#{courseCreate.duration}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="semesterDuration"
                        placeholder="Semester Duration">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Description :</span>
+                <span class="input-group-text" th:text="#{courseCreate.description}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="description"
                        placeholder="Description">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Teacher PIB :</span>
+                <span class="input-group-text" th:text="#{courseCreate.teacher}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:name="teacherName"
                        placeholder="Teacher PIB">
             </div>
-            <input type="submit" th:value="Create">
+            <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{courseCreate.create}"></button>
         </form>
     </div>
 </div>

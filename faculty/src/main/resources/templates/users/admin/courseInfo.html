@@ -12,15 +12,15 @@
 <div class="container p-3">
 
     <div class="d-flex justify-content-center">
-        <h1>Редагувати курс</h1>
+        <h1 th:text="#{courseInfo.edit}"/>
     </div>
     <form th:action="@{/admin/courses/{id} (id=${course.getId()})}"
           method="post">
         <div class="input-group p-1">
             <input class="form-control" aria-label="With textarea" type="text" th:value="${course.getName()}"
                    th:name="name">
-            <button type="submit" class="btn btn-success" th:name="action" th:value="save">save</button>
-            <button type="submit" class="btn btn-danger" th:name="action" th:value="delete">delete</button>
+            <button th:text="#{courseInfo.save}" type="submit" class="btn btn-success" th:name="action" th:value="save">save</button>
+            <button th:text="#{courseInfo.delete}" type="submit" class="btn btn-danger" th:name="action" th:value="delete">delete</button>
         </div>
     </form>
 

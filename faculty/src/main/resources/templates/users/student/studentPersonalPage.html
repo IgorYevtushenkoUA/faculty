@@ -19,7 +19,7 @@
                 <option th:value="FINISHED" th:text="FINISHED" th:selected="(${type}==FINISHED)"/>
             </select>
             <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <button class="btn btn-outline-secondary" type="submit" th:text="#{studentPersonalPage.search}"></button>
             </div>
         </div>
     </form>
@@ -28,8 +28,8 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Course Name</th>
-            <th>Mark</th>
+            <th th:text="#{studentPersonalPage.course}"></th>
+            <th th:text="#{studentPersonalPage.mark}"></th>
         </tr>
         </thead>
         <tbody>

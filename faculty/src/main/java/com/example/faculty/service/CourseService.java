@@ -112,7 +112,7 @@ public class CourseService {
     public Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
 
         if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
-                && topic.isEmpty() && teacher.isEmpty()) {
+                && topic.equals("...") && teacher.isEmpty()) {
             return findAll(pageable);
         }
         return findAllByParams(setCourseNameParam(courseName), setDurationParam(duration), setCapacityParam(capacity),

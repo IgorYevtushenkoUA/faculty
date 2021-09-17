@@ -13,45 +13,45 @@
     <form action="/admin/courses" method="get">
         <div class="">
             <div class="input-group p-1">
-                <span class="input-group-text">Course :</span>
+                <span class="input-group-text" th:text="#{coursesList.courseName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" name="courseName"
                        placeholder="Назва дисципліни">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Duration :</span>
+                <span class="input-group-text" th:text="#{coursesList.duration}"></span>
                 <input class="form-control" aria-label="With textarea" type="number" name="duration"
                        placeholder="Тривалість" th:min="1" th:max="2">
             </div>
             <div class="input-group p-1">
-                <span class="input-group-text">Capacity :</span>
+                <span class="input-group-text" th:text="#{coursesList.courseName}"></span>
                 <input class="form-control" aria-label="With textarea" type="number" name="capacity"
                        placeholder="Кількість студентів" th:min="10" th:max="150">
             </div>
             <div class="input-group p-1">
-                <span class="input-group-text">Topic :</span>
+                <span class="input-group-text" th:text="#{coursesList.courseName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" name="topic" placeholder="Топік">
             </div>
             <div class="input-group p-1">
-                <span class="input-group-text">Teacher :</span>
+                <span class="input-group-text" th:text="#{coursesList.courseName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" name="teacher"
                        placeholder="ПІБ викладача">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{coursesList.filter}">Filter</button>
     </form>
 
     <div class="col-lg-10 mt-5 mb-5">
         <table class="table table-bordered table-responsive-sm">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Capacity</th>
-                <th>Semester</th>
-                <th>Duration</th>
-                <th>Teacher</th>
+                <th>#</th>
+                <th th:text="#{coursesList.title}"></th>
+                <th th:text="#{coursesList.description}"></th>
+                <th th:text="#{coursesList.capacity}"></th>
+                <th th:text="#{coursesList.semesterStart}"></th>
+                <th th:text="#{coursesList.duration}"></th>
+                <th th:text="#{coursesList.teacher}"></th>
             </tr>
             </thead>
             <tbody>
@@ -72,7 +72,7 @@
                 <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
                     <a class="page-link"
                        th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
-                       tabindex="-1">Previous</a>
+                       tabindex="-1" th:text="#{coursesList.previous}"></a>
                 </li>
                 <th:block th:each="item : ${courses.paging.getItems()}">
                     <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
@@ -87,7 +87,7 @@
                 </th:block>
                 <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                       th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}" th:text="#{coursesList.next}"></a>
                 </li>
             </ul>
         </nav>

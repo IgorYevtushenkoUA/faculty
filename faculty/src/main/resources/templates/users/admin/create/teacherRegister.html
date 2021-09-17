@@ -12,43 +12,42 @@
 
 <div class="container mt-5">
 
-
     <div th:insert="components/creationPanel :: creationPanel"/>
 
     <div class="mt-5">
         <form th:action="@{/admin/teachers/register}" method="post" th:object="${teacherForm}">
 
             <div class="input-group p-1">
-                <span class="input-group-text">First Name :</span>
+                <span class="input-group-text" th:text="#{teacherRegister.firstName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:field="*{firstName}"
                        placeholder="Name">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Second Name :</span>
+                <span class="input-group-text" th:text="#{teacherRegister.secondName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:field="*{secondName}"
                        placeholder="Second Name">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Last Name :</span>
+                <span class="input-group-text" th:text="#{teacherRegister.lastName}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:field="*{lastName}"
                        placeholder="Last Name">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Email :</span>
+                <span class="input-group-text" th:text="#{teacherRegister.email}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:field="*{email}"
                        placeholder="Email">
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Password :</span>
+                <span class="input-group-text" th:text="#{teacherRegister.password}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" th:field="*{password}"
                        placeholder="Password">
             </div>
 
-            <button class="btn btn-light btn-lg btn-block" type="submit">Register new teacher</button>
+            <button class="btn btn-light btn-lg btn-block" type="submit" th:text="#{teacherRegister.register}"></button>
         </form>
     </div>
 </div>

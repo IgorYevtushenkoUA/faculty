@@ -20,32 +20,32 @@
         <table class="table table-bordered border-primary">
             <tbody>
             <tr>
-                <td>Topic</td>
+                <td th:text="#{course.topic}"></td>
                 <th th:text="${courseInfoDto.getCourse().getTopic().getName()}"/>
             </tr>
 
             <tr>
-                <td>Capacity</td>
+                <td th:text="#{course.capacity}"></td>
                 <th th:text="${courseInfoDto.getCourse().getCapacity()}"/>
             </tr>
 
             <tr>
-                <td>Semester</td>
+                <td th:text="#{course.semester}"></td>
                 <th th:text="${courseInfoDto.getCourse().getSemesterStart()}"/>
             </tr>
 
             <tr>
-                <td>Semester Duration</td>
+                <td th:text="#{course.duration}"></td>
                 <th th:text="${courseInfoDto.getCourse().getSemesterDuration()}"/>
             </tr>
 
             <tr>
-                <td>Description</td>
+                <td th:text="#{course.description}"></td>
                 <th th:text="${courseInfoDto.getCourse().getDescription()}"/>
             </tr>
 
             <tr>
-                <td>Teacher</td>
+                <td th:text="#{course.teacher}"></td>
                 <td th:text="${courseInfoDto.getCourse().getTeacher().getLastName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getFirstName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getSecondName()}"/>
             </tr>
 
@@ -57,9 +57,9 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Course</th>
-            <th>Record time</th>
+            <th th:text="#{course.name}"></th>
+            <th th:text="#{course.course}"></th>
+            <th th:text="#{course.recordTime}"></th>
         </tr>
         </thead>
         <tbody>
@@ -74,11 +74,11 @@
 
     <div th:if="${canEnroll}">
         <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">ENROLL</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{course.enroll}"></button>
         </form>
     </div>
     <div th:if="!${canEnroll}">
-        <a class="btn btn-primary btn-lg btn-block" href="/login" role="button">Login</a>
+        <a class="btn btn-primary btn-lg btn-block" href="/login" role="button" th:text="#{course.login}"></a>
     </div>
 </div>
 

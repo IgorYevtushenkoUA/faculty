@@ -19,7 +19,7 @@
         <thead>
         <tr>
             <td>#</td>
-            <td>Course Name</td>
+            <td th:text="#{teacherInfo.course}"></td>
             <td></td>
         </tr>
         </thead>
@@ -29,8 +29,7 @@
             <td th:text="${course.getName()}"/>
             <td>
                 <button class="btn btn-danger">
-                    <a th:href="@{/admin/teachers/{teacherId}/course-delete/{courseId} (teacherId=${teacher.getId()}, courseId=${course.getId()})}">
-                        DELETE
+                    <a th:href="@{/admin/teachers/{teacherId}/course-delete/{courseId} (teacherId=${teacher.getId()}, courseId=${course.getId()})}" th:text="#{teacherInfo.delete}">
                     </a>
                 </button>
             </td>
@@ -40,13 +39,13 @@
 
     <div class="input-group">
         <form th:action="@{/admin/teachers/{teacherId} (teacherId=${teacher.getId()})}" method="post">
-            <select th:name="courseId" class="form-select form-select-lg mb-3">
+            <select th:name="courseId" class="custom-select">
                 <option
                         th:each="course:${coursesList}"
                         th:value="${course.getId()}"
                         th:text="${course.getName()}"/>
             </select>
-            <input type="submit" class="btn btn-primary">ADD Course</input>
+            <input type="submit" class="btn btn-primary" th:text="#{teacherInfo.add}"></input>
         </form>
     </div>
 </div>

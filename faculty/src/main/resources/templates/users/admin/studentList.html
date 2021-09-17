@@ -13,11 +13,11 @@
     <div class="mt-5">
         <form th:action="@{/admin/students}" method="get">
             <div class="input-group p-1">
-                <span class="input-group-text">Name :</span>
+                <span class="input-group-text" th:text="#{studentList.name}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" name="name"
                        placeholder="ПІБ студента">
             </div>
-            <button type="submit" class="btn btn-primary btn-lg btn-block mt-2">Search</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block mt-2"  th:text="#{studentList.search}"></button>
         </form>
     </div>
     <div class="mt-5">

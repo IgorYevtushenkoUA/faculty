@@ -2,13 +2,13 @@
 <div th:fragment="creationPanel" class="mt-4">
     <ul class="nav justify-content-center align-content-center">
         <li class="col-4 list-group-item text-center">
-            <a class="nav-link d-inline-flex" th:href="@{/admin/courses/create}">Courses</a>
+            <a class="nav-link d-inline-flex" th:href="@{/admin/courses/create}" th:text="#{creationPanel.courses}"></a>
         </li>
         <li class="col-4 list-group-item text-center">
-            <a class="nav-link d-inline-flex" th:href="@{/admin/teachers/register}">Teachers</a>
+            <a class="nav-link d-inline-flex" th:href="@{/admin/teachers/register}" th:text="#{creationPanel.teachers}"></a>
         </li>
         <li class="col-4 list-group-item text-center">
-            <a class="nav-link d-inline-flex" th:href="@{/admin/students/create}">Students</a>
+            <a class="nav-link d-inline-flex" th:href="@{/admin/students/create}" th:text="#{creationPanel.students}"></a>
         </li>
     </ul>
 </div>

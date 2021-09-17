@@ -13,11 +13,11 @@
     <div class="mt-2">
         <form th:action="@{/admin/teachers}" th:method="get">
             <div class="input-group p-1">
-                <span class="input-group-text">Teacher PIB :</span>
+                <span class="input-group-text" th:text="#{teacherList.name}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" name="name"
                        placeholder="PIB">
             </div>
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Search</button>
+            <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{teacherList.search}"></button>
         </form>
     </div>
 
@@ -26,7 +26,7 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>PIB</th>
+                <th th:text="#{teacherList.name}"></th>
             </tr>
             </thead>
             <tbody>
@@ -40,7 +40,7 @@
         </table>
     </div>
     <div>
-        <button class="btn btn-light btn-lg btn-block"><a th:href="@{/admin/teachers/register}">Додати викладача</a>
+        <button class="btn btn-light btn-lg btn-block"><a th:href="@{/admin/teachers/register}" th:text="#{teacherList.create}"></a>
         </button>
     </div>
 </div>

@@ -13,7 +13,7 @@
     <div class="mt-2">
         <form th:action="@{/teacher/{courseId} (courseId=${courseId})}" method="get">
             <div class="input-group p-1">
-                <span class="input-group-text">Year :</span>
+                <span class="input-group-text" th:text="#{courseInfo.year}"></span>
                 <input class="form-control" aria-label="With textarea" type="number" name="year"
                        placeholder="Рік" th:min="2021" th:max="2030">
             </div>
@@ -26,10 +26,10 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Student Name</th>
-                <th>Course</th>
-                <th>Record Time</th>
-                <th>Mark</th>
+                <th th:text="#{courseInfo.student}"></th>
+                <th th:text="#{courseInfo.course}"></th>
+                <th th:text="#{courseInfo.recordTime}"></th>
+                <th th:text="#{courseInfo.mark}"></th>
                 <th></th>
             </tr>
             </thead>
@@ -43,7 +43,7 @@
                     <td th:text="${student.getRecordingTime()}"/>
                     <td><input type="number" th:value="${student.getMark()}" name="mark" th:min="0" th:max="100"></td>
                     <td>
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-primary" th:text="#{courseInfo.save}"></button>
                     </td>
                 </form>
             </tr>

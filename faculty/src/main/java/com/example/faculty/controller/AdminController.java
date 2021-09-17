@@ -96,7 +96,7 @@ public class AdminController {
                              @RequestParam(value = "courseName", defaultValue = "") String courseName,
                              @RequestParam(value = "duration", defaultValue = "0") Integer duration,
                              @RequestParam(value = "capacity", defaultValue = "0") Integer capacity,
-                             @RequestParam(value = "topic", defaultValue = "") String topic,
+                             @RequestParam(value = "topic", defaultValue = "...") String topic,
                              @RequestParam(value = "teacher", defaultValue = "") String teacher,
                              @RequestParam(value = "sortType", defaultValue = "ASC") String sortType,
                              @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,

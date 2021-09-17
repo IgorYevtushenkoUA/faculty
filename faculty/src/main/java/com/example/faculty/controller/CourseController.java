@@ -4,10 +4,12 @@ import com.example.faculty.dto.CourseInfoDto;
 import com.example.faculty.dto.StudentInfoDto;
 import com.example.faculty.entety.Student;
 import com.example.faculty.entety.StudentHasCourse;
+import com.example.faculty.entety.Topic;
 import com.example.faculty.entety.User;
 import com.example.faculty.enums.ROLE;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.StudentHasCourseService;
+import com.example.faculty.service.TopicService;
 import com.example.faculty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -37,13 +39,16 @@ public class CourseController {
     @Autowired
     StudentHasCourseService studentHasCourseService;
 
+    @Autowired
+    TopicService topicService;
+
     @GetMapping("/")
     public String coursesGet(
             Model model,
             @RequestParam(value = "courseName", defaultValue = "") String courseName,
             @RequestParam(value = "duration", defaultValue = "0") int duration,
             @RequestParam(value = "capacity", defaultValue = "0") int capacity,
-            @RequestParam(value = "topic", defaultValue = "") String topic,
+            @RequestParam(value = "topic", defaultValue = "...") String topic,
             @RequestParam(value = "teacher", defaultValue = "") String teacher,
             @RequestParam(value = "sortType", defaultValue = "ASC") String sortType,
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
@@ -58,6 +63,7 @@ public class CourseController {
         model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size, sortType));
         model.addAttribute("role", getRole());
         model.addAttribute("classes", setClass(sortType));
+        model.addAttribute("topicList", topicService.findAll());
         return "courses";
     }
 

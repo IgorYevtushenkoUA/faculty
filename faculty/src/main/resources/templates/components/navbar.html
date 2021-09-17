@@ -2,10 +2,10 @@
      class="navbar navbar-light bg-light">
 
     <div class="d-flex justify-content-lg-start">
-        <a class="navbar-brand" href="/">FACULTY</a>
+        <a class="navbar-brand" href="/" th:text="#{navbar.faculty}"/>
         <ul class="nav ">
             <li class="nav-item active">
-                <a class="nav-link" href="/">Дисципліни</a>
+                <a class="nav-link" href="/" th:text="#{navbar.courses}"/>
             </li>
         </ul>
     </div>
@@ -14,10 +14,10 @@
          class=" d-flex justify-content-center">
         <ul class="nav  justify-content-center">
             <li class="nav-item">
-                <a class="nav-link" href="/admin/students">Студенти</a>
+                <a class="nav-link" href="/admin/students" th:text="#{navbar.student}"></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/admin/teachers">Вчителі</a>
+                <a class="nav-link" href="/admin/teachers" th:text="#{navbar.teacher}"></a>
             </li>
         </ul>
     </div>
@@ -26,20 +26,32 @@
         <div th:if="${role}=='ROLE_GUEST'">
             <ul class="nav  justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" th:href="@{''(lang=en)}">ENG</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
+                    <a class="nav-link" th:href="@{''(lang=ua)}">UA</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login" th:text="#{navbar.login}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register" th:text="#{navbar.register}"></a>
                 </li>
             </ul>
         </div>
         <div th:if="${role}!='ROLE_GUEST'">
             <ul class="nav  justify-content-end">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">MY PAGE</a>
+                    <a class="nav-link" th:href="@{''(lang=en)}">ENG</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout">LOGOUT</a>
+                    <a class="nav-link" th:href="@{''(lang=ua)}">UA</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin" th:text="#{navbar.my_page}"></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" th:text="#{navbar.logout}"></a>
                 </li>
             </ul>
         </div>

@@ -15,7 +15,7 @@
     <form th:action="@{/admin/students/{id} (id=${student.getId()})}" method="post">
         <button type="submit"
                 class="btn"
-                th:text="${student.isEnable()} ? 'Розблокувати' : 'Блокувати'"/>
+                th:text="${student.isEnable()} ? #{studentInfo.unblock} : #{studentInfo.block}"/>
     </form>
 </div>
 

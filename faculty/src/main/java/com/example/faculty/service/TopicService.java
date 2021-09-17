@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -14,8 +15,12 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
 
-    public Topic findByName(String name){
+    public Topic findByName(String name) {
         return topicRepository.findByName(name);
+    }
+
+    public List<Topic> findAll() {
+        return topicRepository.findAll();
     }
 
 }

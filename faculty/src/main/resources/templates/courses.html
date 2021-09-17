@@ -13,59 +13,66 @@
     <form action="/" method="get">
         <div class="">
             <div class="input-group p-1">
-                <span class="input-group-text">Course :</span>
-
-                <input type="radio" class="btn-check" name="sortType" id="success-outlined" autocomplete="off"
-                       checked hidden/>
+                <span class="input-group-text" th:text="#{courses.course}"></span>
 
                 <input class="form-control" aria-label="With textarea" type="text" name="courseName"
                        placeholder="Назва дисципліни">
 
-                <div onclick="() => {}">
+                <div>
                     <input id="asc" type="radio" name="sortType" th:value="ASC" th:checked="${sortType == 'ASC'}" hidden/>
-                    <label for="asc" id="ascl" th:class="${classes.get(0)}" onclick="setASC()">ASC</label><br>
+                    <label for="asc" id="ascl" th:class="${classes.get(0)}" onclick="setASC()"  th:text="#{courses.asc}"></label><br>
                 </div>
 
                 <div>
                     <input id="desc" type="radio" name="sortType" th:value="DESC" th:checked="${sortType == 'DESC'}" hidden/>
-                    <label for="desc" id="descl" th:class="${classes.get(1)}" onclick="setDESC()">DESC</label><br>
+                    <label for="desc" id="descl" th:class="${classes.get(1)}" onclick="setDESC()"  th:text="#{courses.desc}"></label><br>
                 </div>
             </div>
 
             <div class="input-group p-1">
-                <span class="input-group-text">Duration :</span>
+                <span class="input-group-text" th:text="#{courses.duration}"></span>
                 <input class="form-control" aria-label="With textarea" type="number" name="duration"
                        placeholder="Тривалість" th:min="1" th:max="2">
             </div>
             <div class="input-group p-1">
-                <span class="input-group-text">Capacity :</span>
+                <span class="input-group-text" th:text="#{courses.capacity}"></span>
                 <input class="form-control" aria-label="With textarea" type="number" name="capacity"
                        placeholder="Кількість студентів" th:min="10" th:max="150">
             </div>
+
             <div class="input-group p-1">
-                <span class="input-group-text">Topic :</span>
-                <input class="form-control" aria-label="With textarea" type="text" name="topic" placeholder="Топік">
+                <span class="input-group-text" th:text="#{courses.topic}"></span>
+<!--                <input class="form-control" aria-label="With textarea" type="text" name="topic" placeholder="Топік">-->
+                <select name="topic" class="custom-select">
+                    <option
+                            th:each="t:${topicList}"
+                            th:text="${t.getName()}"
+                            th:selected="(${topic}==${t.getName()})"
+                    />
+                    <option th:value="..." th:text="..." th:selected="(${topic}=='...')">...</option>
+                </select>
             </div>
+
             <div class="input-group p-1">
-                <span class="input-group-text">Teacher :</span>
+                <span class="input-group-text" th:text="#{courses.teacher}"></span>
                 <input class="form-control" aria-label="With textarea" type="text" name="teacher"
                        placeholder="ПІБ викладача">
             </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
+        <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{courses.filter}"></button>
     </form>
 
     <div class="col-lg-10 mt-5 mb-5">
         <table class="table table-bordered table-responsive-sm">
             <thead>
             <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Capacity</th>
-                <th>Semester</th>
-                <th>Duration</th>
-                <th>Teacher</th>
+                <th>#</th>
+                <th th:text="#{courses.title}"></th>
+                <th th:text="#{courses.description}"></th>
+                <th th:text="#{courses.capacity}"></th>
+                <th th:text="#{courses.semester}"></th>
+                <th th:text="#{courses.duration}"></th>
+                <th th:text="#{courses.teacher}"></th>
             </tr>
             </thead>
             <tbody>
@@ -86,7 +93,7 @@
                 <li class="page-item" th:classappend="${!courses.paging.isPrevEnabled()? 'disabled' : ''}">
                     <a class="page-link"
                        th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber - 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
-                       tabindex="-1">Previous</a>
+                       tabindex="-1" th:text="#{courses.previous}"></a>
                 </li>
                 <th:block th:each="item : ${courses.paging.getItems()}">
                     <li class="page-item" th:classappend="${item.index == courses.paging.pageNumber? 'active' : ''}"
@@ -101,7 +108,7 @@
                 </th:block>
                 <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}">Next</a>
+                       th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"  th:text="#{courses.next}"></a>
                 </li>
             </ul>
         </nav>
