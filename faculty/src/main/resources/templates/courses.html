@@ -10,11 +10,25 @@
 <div th:insert="components/navbar :: navbar"/>
 
 <div class="container p-3">
-
     <form action="/" method="get">
         <div class="">
             <div class="input-group p-1">
                 <span class="input-group-text">Course :</span>
+
+                <input type="radio" class="btn-check" name="sortType" id="success-outlined" autocomplete="off"
+                       checked hidden/>
+
+
+                <div onclick="() => {}">
+                    <input id="asc" type="radio" name="sortType" th:value="ASC" th:checked="${sortType == 'ASC'}" hidden/>
+                    <label for="asc" id="ascl" th:class="${classes.get(0)}" onclick="setASC()">ASC</label><br>
+                </div>
+
+                <div>
+                    <input id="desc" type="radio" name="sortType" th:value="DESC" th:checked="${sortType == 'DESC'}" hidden/>
+                    <label for="desc" id="descl" th:class="${classes.get(1)}" onclick="setDESC()">DESC</label><br>
+                </div>
+
                 <input class="form-control" aria-label="With textarea" type="text" name="courseName"
                        placeholder="Назва дисципліни">
             </div>
@@ -42,7 +56,6 @@
         <button type="submit" class="btn btn-primary btn-lg btn-block">Filter</button>
     </form>
 
-    <!--    <div class="row">-->
     <div class="col-lg-10 mt-5 mb-5">
         <table class="table table-bordered table-responsive-sm">
             <thead>
@@ -94,8 +107,25 @@
             </ul>
         </nav>
     </div>
-    <!--    </div>-->
 </div>
+
+<script>
+
+    function setASC(){
+        document.getElementById("ascl").classList.remove("btn-outline-primary");
+        document.getElementById("ascl").classList.add("btn-primary");
+        document.getElementById("descl").classList.remove("btn-danger");
+        document.getElementById("descl").classList.add("btn-outline-danger");
+    }
+
+    function setDESC(){
+        document.getElementById("ascl").classList.remove("btn-primary");
+        document.getElementById("ascl").classList.add("btn-outline-primary");
+        document.getElementById("descl").classList.remove("btn-outline-danger");
+        document.getElementById("descl").classList.add("btn-danger");
+    }
+
+</script>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>

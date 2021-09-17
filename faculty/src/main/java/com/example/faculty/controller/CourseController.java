@@ -45,6 +45,7 @@ public class CourseController {
             @RequestParam(value = "capacity", defaultValue = "0") int capacity,
             @RequestParam(value = "topic", defaultValue = "") String topic,
             @RequestParam(value = "teacher", defaultValue = "") String teacher,
+            @RequestParam(value = "sortType", defaultValue = "ASC") String sortType,
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "size", required = false, defaultValue = "2") int size) {
 
@@ -53,9 +54,16 @@ public class CourseController {
         model.addAttribute("capacity", capacity);
         model.addAttribute("topic", topic);
         model.addAttribute("teacher", teacher);
-        model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size));
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size, sortType));
         model.addAttribute("role", getRole());
+        model.addAttribute("classes", setClass(sortType));
         return "courses";
+    }
+
+    private List<String> setClass(String sortType){
+        if (sortType.equals("ASC")) return List.of("btn btn-primary","btn btn-outline-danger");
+        return List.of("btn btn-outline-primary","btn btn-danger");
     }
 
     @GetMapping("/courses/{courseId}")
@@ -91,7 +99,7 @@ public class CourseController {
     }
 
 
-    private String getRole(){
+    private String getRole() {
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser"))
             return ROLE.ROLE_GUEST.name();
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

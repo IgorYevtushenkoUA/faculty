@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
+
 import javax.transaction.Transactional;
 import java.util.List;
 
@@ -95,13 +96,21 @@ public class CourseService {
         return courseRepository.findCourseNameByName(name);
     }
 
-    public Paged<Course> getPage(String courseName, Integer duration, Integer capacity, String topic, String teacher,int pageNumber, int size) {
-        PageRequest request = PageRequest.of(pageNumber - 1, size);
-        Page<Course> postPage = setCourses(courseName, duration, capacity, topic, teacher,request);
+    public Paged<Course> getPage(String courseName, Integer duration, Integer capacity, String topic, String teacher, int pageNumber, int size, String sortType) {
+//        PageRequest request = PageRequest.of(pageNumber - 1, size);
+        Pageable request = PageRequest.of(pageNumber - 1, size, setSort(sortType));
+        Page<Course> postPage = setCourses(courseName, duration, capacity, topic, teacher, request);
         return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
     }
 
+    private Sort setSort(String sortType){
+        return sortType.equals("ASC")
+                ? Sort.by("name").ascending()
+                : Sort.by("name").descending();
+    }
+
     public Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
+
         if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
                 && topic.isEmpty() && teacher.isEmpty()) {
             return findAll(pageable);
@@ -140,21 +149,20 @@ public class CourseService {
     }
 
 
-    public Course addTeacherToCourse(int courseId, int teacherId){
+    public Course addTeacherToCourse(int courseId, int teacherId) {
         Course course = courseRepository.findById(courseId);
         if (course != null)
             course.setTeacher(userRepository.findTeacherById(teacherId));
         return course;
     }
 
-    public void deleteCourseById(int id){
+    public void deleteCourseById(int id) {
         courseRepository.deleteById(id);
     }
 
-    public List<Course> findAllStudentCoursesByType(int id, String statusName){
+    public List<Course> findAllStudentCoursesByType(int id, String statusName) {
         return courseRepository.findAllStudentCoursesByType(id, statusName);
     }
-
 
 
 }

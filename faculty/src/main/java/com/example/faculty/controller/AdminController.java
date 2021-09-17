@@ -98,6 +98,7 @@ public class AdminController {
                              @RequestParam(value = "capacity", defaultValue = "0") Integer capacity,
                              @RequestParam(value = "topic", defaultValue = "") String topic,
                              @RequestParam(value = "teacher", defaultValue = "") String teacher,
+                             @RequestParam(value = "sortType", defaultValue = "ASC") String sortType,
                              @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
                              @RequestParam(value = "size", required = false, defaultValue = "2") int size) {
         model.addAttribute("courseName", courseName);
@@ -105,7 +106,8 @@ public class AdminController {
         model.addAttribute("capacity", capacity);
         model.addAttribute("topic", topic);
         model.addAttribute("teacher", teacher);
-        model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size));
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size, sortType));
         return "/users/admin/coursesList";
     }
 
@@ -181,13 +183,13 @@ public class AdminController {
     }
 
     @GetMapping("/admin/students/create")
-    public String studentRegisterGet(Model model){
+    public String studentRegisterGet(Model model) {
         model.addAttribute("userForm", new Student());
         return "/users/admin/create/studentRegister";
     }
 
     @PostMapping("/admin/students/create")
-    public String studentRegisterPost(){
+    public String studentRegisterPost() {
         return "redirect:/admin/students";
     }
 
