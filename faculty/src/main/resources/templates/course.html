@@ -46,7 +46,9 @@
 
             <tr>
                 <td th:text="#{course.teacher}"></td>
-                <td th:text="${courseInfoDto.getCourse().getTeacher().getLastName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getFirstName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getSecondName()}"/>
+                <td th:if="${courseInfoDto.getCourse().getTeacher()} != null"
+                    th:text="${courseInfoDto.getCourse().getTeacher().getLastName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getFirstName()} + ' ' + ${courseInfoDto.getCourse().getTeacher().getSecondName()}"/>
+                <td th:if="${courseInfoDto.getCourse().getTeacher()}== null" th:text="#{courses.without_teacher}"/>
             </tr>
 
             </tbody>
@@ -72,14 +74,22 @@
         </tbody>
     </table>
 
-    <div th:if="${canEnroll}">
-        <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
-            <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{course.enroll}"></button>
-        </form>
+    <div th:if="${showRegisterBtn}">
+        <div th:if="${canEnroll}">
+            <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{course.enroll}"></button>
+            </form>
+        </div>
+        <div th:if="!${canEnroll}">
+            <a class="btn btn-primary btn-lg btn-block" href="/login" role="button" th:text="#{course.login}"></a>
+        </div>
     </div>
-    <div th:if="!${canEnroll}">
-        <a class="btn btn-primary btn-lg btn-block" href="/login" role="button" th:text="#{course.login}"></a>
+
+    <div th:if="${role}==ROLE_ADMIN">
+        <a class="btn btn-primary btn-lg btn-block" th:href="@{/admin/courses/{courseId} (courseId=${courseId})}" th:text="#{courseInfo.edit}"/>
     </div>
+
+
 </div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>

@@ -4,7 +4,6 @@ import com.example.faculty.dto.CourseInfoDto;
 import com.example.faculty.dto.StudentInfoDto;
 import com.example.faculty.entety.Student;
 import com.example.faculty.entety.StudentHasCourse;
-import com.example.faculty.entety.Topic;
 import com.example.faculty.entety.User;
 import com.example.faculty.enums.ROLE;
 import com.example.faculty.service.CourseService;
@@ -12,20 +11,15 @@ import com.example.faculty.service.StudentHasCourseService;
 import com.example.faculty.service.TopicService;
 import com.example.faculty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.faculty.util.Constants.DEFAULT_PAGE_SIZE;
+import static com.example.faculty.util.Methods.getRole;
 
 @Controller
 public class CourseController {
@@ -61,25 +55,43 @@ public class CourseController {
         model.addAttribute("teacher", teacher);
         model.addAttribute("sortType", sortType);
         model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size, sortType));
-        model.addAttribute("role", getRole());
         model.addAttribute("classes", setClass(sortType));
         model.addAttribute("topicList", topicService.findAll());
         return "courses";
     }
 
-    private List<String> setClass(String sortType){
-        if (sortType.equals("ASC")) return List.of("btn btn-primary","btn btn-outline-danger");
-        return List.of("btn btn-outline-primary","btn btn-danger");
+    private List<String> setClass(String sortType) {
+        if (sortType.equals("ASC")) return List.of("btn btn-primary", "btn btn-outline-danger");
+        return List.of("btn btn-outline-primary", "btn btn-danger");
     }
 
     @GetMapping("/courses/{courseId}")
     public String courseGet(Model model,
                             @PathVariable("courseId") Integer courseId) {
+
+        System.out.println(buildCourseInfoDto(courseId));
+
         model.addAttribute("courseId", courseId);
         model.addAttribute("courseInfoDto", buildCourseInfoDto(courseId));
-        model.addAttribute("canEnroll", !SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser"));
-        model.addAttribute("role", getRole());
+
+        model.addAttribute("canEnroll", isCanEnroll());
+        model.addAttribute("showRegisterBtn", showRegisterBtn());
         return "course";
+    }
+
+    private boolean isCanEnroll() {
+        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (obj.equals("anonymousUser"))
+            return false;
+        return true;
+    }
+
+    private boolean showRegisterBtn(){
+        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (obj.equals("anonymousUser"))
+            return true;
+        User user = (User) obj;
+        return user.getRole().getName().equals(ROLE.ROLE_STUDENT.name()) && user.isEnabled();
     }
 
     @PostMapping("/courses/{courseId}")
@@ -87,6 +99,11 @@ public class CourseController {
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         studentHasCourseService.enrollStudentToCourse(student.getId(), courseId);
         return "redirect:/courses/{courseId}";
+    }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
     }
 
     private CourseInfoDto buildCourseInfoDto(int courseId) {
@@ -104,12 +121,5 @@ public class CourseController {
         return courseInfoDto;
     }
 
-
-    private String getRole() {
-        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser"))
-            return ROLE.ROLE_GUEST.name();
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getRole().getName();
-    }
 
 }

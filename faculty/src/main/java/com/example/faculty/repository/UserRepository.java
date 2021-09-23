@@ -24,7 +24,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("select u from User u where lower(concat(u.lastName,' ',u.firstName,' ',u.secondName)) like lower(concat('%',:pib,'%') )")
     List<Teacher> findTeachersByPIB(@Param("pib") String pib);
 
-    @Query("select u  from User u where u.role.id=2")
+    @Query("select t from Teacher t")
     List<Teacher> findAllTeacher();
 
     @Query("select u  from User u where u.role.id=3")

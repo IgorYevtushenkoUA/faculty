@@ -42,6 +42,10 @@
             <input type="number" th:field="*{courseNum}" class="form-control" th:min="1" th:max="4">
         </div>
 
+        <div class="text-danger">
+            <span th:text="${message}"/>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{register.register}"></button>
     </form>
 </div>

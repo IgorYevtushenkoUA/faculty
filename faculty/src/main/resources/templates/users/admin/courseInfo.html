@@ -16,9 +16,60 @@
     </div>
     <form th:action="@{/admin/courses/{id} (id=${course.getId()})}"
           method="post">
+
         <div class="input-group p-1">
-            <input class="form-control" aria-label="With textarea" type="text" th:value="${course.getName()}"
-                   th:name="name">
+            <span class="input-group-text" th:text="#{courseCreate.courseName}"></span>
+            <input class="form-control" aria-label="With textarea" type="text" th:name="name"
+                   th:placeholder="${course.getName()}">
+        </div>
+
+        <div class="input-group p-1">
+            <span class="input-group-text" th:text="#{courseCreate.topic}"></span>
+            <select th:name="topicId" class="custom-select">
+                <option
+                        th:selected="${course.getTopic().getName()} == ${t.getName()}"
+                        th:each="t:${topics}"
+                        th:value="${t.getId()}"
+                        th:text="${t.getName()}"/>
+            </select>
+        </div>
+
+        <div class="input-group p-1">
+            <span class="input-group-text" th:text="#{courseCreate.capacity}"></span>
+            <input class="form-control" aria-label="With textarea" type="number" th:min="10" th:max="150" th:name="capacity"
+                   th:placeholder="${course.getCapacity()}">
+        </div>
+
+        <div class="input-group p-1">
+            <span class="input-group-text" th:text="#{courseCreate.semesterStart}"></span>
+            <input class="form-control" aria-label="With textarea" type="number" th:min="1" th:max="8" th:name="semesterStart"
+                   th:placeholder="${course.getSemesterStart()}">
+        </div>
+
+        <div class="input-group p-1">
+            <span class="input-group-text" th:text="#{courseCreate.duration}"></span>
+            <input class="form-control" aria-label="With textarea" type="number" th:min="1" th:max="2" th:name="semesterDuration"
+                   th:placeholder="${course.getSemesterDuration()}">
+        </div>
+
+        <div class="input-group p-1">
+            <span class="input-group-text" th:text="#{courseCreate.description}"></span>
+            <input class="form-control" aria-label="With textarea" type="text" th:name="description"
+                   th:placeholder="${course.getDescription()}">
+        </div>
+
+        <div class="input-group p-1">
+            <span class="input-group-text" th:text="#{courseCreate.teacher}"></span>
+            <select th:name="teacherId" class="custom-select">
+                <option
+                        th:selected="(${course.getTeacher().getLastName()} + ' ' + ${course.getTeacher().getFirstName()} + ' ' + ${course.getTeacher().getSecondName()}) == (${t.getLastName()} + ' ' + ${t.getFirstName()} + ' ' + ${t.getSecondName()})"
+                        th:each="t:${teachers}"
+                        th:value="${t.getId()}"
+                        th:text="${t.getLastName()} + ' ' + ${t.getFirstName()} + ' ' + ${t.getSecondName()}"/>
+            </select>
+        </div>
+
+        <div class="input-group p-1">
             <button th:text="#{courseInfo.save}" type="submit" class="btn btn-success" th:name="action" th:value="save">save</button>
             <button th:text="#{courseInfo.delete}" type="submit" class="btn btn-danger" th:name="action" th:value="delete">delete</button>
         </div>

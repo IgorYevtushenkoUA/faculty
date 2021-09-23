@@ -13,8 +13,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class RoleService {
 
-    @Autowired
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     public Role findByName(String name){
         return roleRepository.findByName(name);

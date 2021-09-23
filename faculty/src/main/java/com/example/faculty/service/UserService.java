@@ -4,6 +4,7 @@ import com.example.faculty.entety.*;
 import com.example.faculty.entety.paging.Paged;
 import com.example.faculty.entety.paging.Paging;
 import com.example.faculty.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,16 +20,11 @@ import java.util.List;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RoleService roleService;
-
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -15,8 +15,8 @@ public class TopicService {
 
     private final TopicRepository topicRepository;
 
-    public Topic findByName(String name) {
-        return topicRepository.findByName(name);
+    public Topic findById(int id) {
+        return topicRepository.findById(id);
     }
 
     public List<Topic> findAll() {

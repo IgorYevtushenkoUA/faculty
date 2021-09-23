@@ -55,14 +55,17 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="course : ${courses.page}">
-                <td th:text="${course.getId()}">id</td>
+            <tr th:each="course, iter : ${courses.page}">
+                <td th:text="${(courses.paging.getPageNumber()-1) * courses.paging.getPageSize() + (iter.index+1)}">id
+                </td>
                 <td><a th:href="@{/courses/{id} (id=${course.getId})}" th:text="${course.getName()}"/></td>
                 <td th:text="${course.getDescription()}"/>
                 <td th:text="${course.getCapacity()}"/>
                 <td th:text="${course.getSemesterStart()}"/>
                 <td th:text="${course.getSemesterDuration()}"/>
-                <td th:text="${course.getTeacher().getLastName()} + ' ' + ${course.getTeacher().getFirstName().charAt(0)} + '.' + ${course.getTeacher().getSecondName().charAt(0)} + '.' "/>
+                <td th:if="${course.getTeacher() != null}"
+                    th:text="${course.getTeacher().getLastName()} + ' ' + ${course.getTeacher().getFirstName().charAt(0)} + '.' + ${course.getTeacher().getSecondName().charAt(0)} + '.' "/>
+                <td th:if="${course.getTeacher() == null}" th:text="#{courses.without_teacher}"/>
             </tr>
             </tbody>
         </table>
@@ -87,7 +90,8 @@
                 </th:block>
                 <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}" th:text="#{coursesList.next}"></a>
+                       th:href="@{'/admin/courses?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                       th:text="#{coursesList.next}"></a>
                 </li>
             </ul>
         </nav>

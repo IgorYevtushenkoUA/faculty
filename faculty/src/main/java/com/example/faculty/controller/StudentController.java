@@ -10,10 +10,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.faculty.util.Methods.getRole;
 
 @Controller
 public class StudentController {
@@ -30,16 +33,21 @@ public class StudentController {
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         model.addAttribute("type", type);
         model.addAttribute("courses", buildStudentCourseInfoDto(student.getId(),
-                courseService.findAllStudentCoursesByType(student.getId(),type)));
+                courseService.findAllStudentCoursesByType(student.getId(), type)));
 
         return "/users/student/studentPersonalPage";
     }
 
-    private List<StudentCourseInfoDto> buildStudentCourseInfoDto(int studentId, List<Course> courses){
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
+
+    private List<StudentCourseInfoDto> buildStudentCourseInfoDto(int studentId, List<Course> courses) {
         List<StudentCourseInfoDto> studentCourseInfoDtoList = new ArrayList<>();
-        for(Course course : courses){
+        for (Course course : courses) {
             studentCourseInfoDtoList.add(new StudentCourseInfoDto(course.getName(),
-                    studentHasCourseService.getMarkForCourse(studentId,course.getId())));
+                    studentHasCourseService.getMarkForCourse(studentId, course.getId())));
         }
         return studentCourseInfoDtoList;
     }

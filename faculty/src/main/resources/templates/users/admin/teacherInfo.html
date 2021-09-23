@@ -29,7 +29,8 @@
             <td th:text="${course.getName()}"/>
             <td>
                 <button class="btn btn-danger">
-                    <a th:href="@{/admin/teachers/{teacherId}/course-delete/{courseId} (teacherId=${teacher.getId()}, courseId=${course.getId()})}" th:text="#{teacherInfo.delete}">
+                    <a th:href="@{/admin/teachers/{teacherId}/course-delete/{courseId} (teacherId=${teacher.getId()}, courseId=${course.getId()})}"
+                       th:text="#{teacherInfo.delete}">
                     </a>
                 </button>
             </td>
@@ -37,17 +38,20 @@
         </tbody>
     </table>
 
-    <div class="input-group">
-        <form th:action="@{/admin/teachers/{teacherId} (teacherId=${teacher.getId()})}" method="post">
+    <form th:action="@{/admin/teachers/{teacherId} (teacherId=${teacher.getId()})}" method="post">
+        <div class="input-group">
+            <span class="input-group-text" th:text="#{courses.topic}"></span>
             <select th:name="courseId" class="custom-select">
                 <option
                         th:each="course:${coursesList}"
                         th:value="${course.getId()}"
                         th:text="${course.getName()}"/>
             </select>
-            <input type="submit" class="btn btn-primary" th:text="#{teacherInfo.add}"></input>
-        </form>
-    </div>
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" th:text="#{teacherInfo.add}"></button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>

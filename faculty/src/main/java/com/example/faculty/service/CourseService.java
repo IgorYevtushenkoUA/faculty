@@ -54,7 +54,6 @@ public class CourseService {
             c.setName(course.getName());
             courseRepository.save(c);
         }
-        // todo send response that can not save
     }
 
     public Page<Course> findAllByParams(List<String> courseName, List<Integer> duration,
@@ -97,48 +96,9 @@ public class CourseService {
     }
 
     public Paged<Course> getPage(String courseName, Integer duration, Integer capacity, String topic, String teacher, int pageNumber, int size, String sortType) {
-//        PageRequest request = PageRequest.of(pageNumber - 1, size);
         Pageable request = PageRequest.of(pageNumber - 1, size, setSort(sortType));
         Page<Course> postPage = setCourses(courseName, duration, capacity, topic, teacher, request);
         return new Paged<>(postPage, Paging.of(postPage.getTotalPages(), pageNumber, size));
-    }
-
-    private Sort setSort(String sortType){
-        return sortType.equals("ASC")
-                ? Sort.by("name").ascending()
-                : Sort.by("name").descending();
-    }
-
-    public Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
-
-        if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
-                && topic.equals("...") && teacher.isEmpty()) {
-            return findAll(pageable);
-        }
-        return findAllByParams(setCourseNameParam(courseName), setDurationParam(duration), setCapacityParam(capacity),
-                setTopicsParam(topic), setTeacherNameParam(teacher), pageable);
-    }
-
-    public List<String> setCourseNameParam(String courseName) {
-        return courseName.isEmpty() ? findAllCourseNames() : findCourseNameByName(courseName);
-    }
-
-    public List<Integer> setDurationParam(Integer duration) {
-        return duration == EMPTY_INTEGER_VALUE ? findAllDurations() : List.of(duration);
-    }
-
-    public List<Integer> setCapacityParam(Integer capacity) {
-        return capacity == EMPTY_INTEGER_VALUE ? findAllCapacities() : List.of(capacity);
-    }
-
-    public List<String> setTopicsParam(String topics) {
-        return topics.isEmpty() ? findAllTopics() : List.of(topics);
-    }
-
-    public List<Integer> setTeacherNameParam(String teacherName) {
-        return teacherName.isEmpty()
-                ? findAllTeacherNames()
-                : findTeacherIdByName(teacherName);
     }
 
     public Course deleteTeacherFromCourse(int id) {
@@ -147,7 +107,6 @@ public class CourseService {
             course.setTeacher(null);
         return course;
     }
-
 
     public Course addTeacherToCourse(int courseId, int teacherId) {
         Course course = courseRepository.findById(courseId);
@@ -164,5 +123,42 @@ public class CourseService {
         return courseRepository.findAllStudentCoursesByType(id, statusName);
     }
 
+    private Sort setSort(String sortType){
+        return sortType.equals("ASC")
+                ? Sort.by("name").ascending()
+                : Sort.by("name").descending();
+    }
+
+    private Page<Course> setCourses(String courseName, Integer duration, Integer capacity, String topic, String teacher, Pageable pageable) {
+
+        if (courseName.isEmpty() && duration == EMPTY_INTEGER_VALUE && capacity == EMPTY_INTEGER_VALUE
+                && topic.equals("...") && teacher.isEmpty()) {
+            return findAll(pageable);
+        }
+        return findAllByParams(setCourseNameParam(courseName), setDurationParam(duration), setCapacityParam(capacity),
+                setTopicsParam(topic), setTeacherNameParam(teacher), pageable);
+    }
+
+    private List<String> setCourseNameParam(String courseName) {
+        return courseName.isEmpty() ? findAllCourseNames() : findCourseNameByName(courseName);
+    }
+
+    private List<Integer> setDurationParam(Integer duration) {
+        return duration == EMPTY_INTEGER_VALUE ? findAllDurations() : List.of(duration);
+    }
+
+    private List<Integer> setCapacityParam(Integer capacity) {
+        return capacity == EMPTY_INTEGER_VALUE ? findAllCapacities() : List.of(capacity);
+    }
+
+    private List<String> setTopicsParam(String topics) {
+        return topics.equals("...") ? findAllTopics() : List.of(topics);
+    }
+
+    private List<Integer> setTeacherNameParam(String teacherName) {
+        return teacherName.isEmpty()
+                ? findAllTeacherNames()
+                : findTeacherIdByName(teacherName);
+    }
 
 }

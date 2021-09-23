@@ -19,13 +19,17 @@
                        placeholder="Назва дисципліни">
 
                 <div>
-                    <input id="asc" type="radio" name="sortType" th:value="ASC" th:checked="${sortType == 'ASC'}" hidden/>
-                    <label for="asc" id="ascl" th:class="${classes.get(0)}" onclick="setASC()"  th:text="#{courses.asc}"></label><br>
+                    <input id="asc" type="radio" name="sortType" th:value="ASC" th:checked="${sortType == 'ASC'}"
+                           hidden/>
+                    <label for="asc" id="ascl" th:class="${classes.get(0)}" onclick="setASC()"
+                           th:text="#{courses.asc}"></label><br>
                 </div>
 
                 <div>
-                    <input id="desc" type="radio" name="sortType" th:value="DESC" th:checked="${sortType == 'DESC'}" hidden/>
-                    <label for="desc" id="descl" th:class="${classes.get(1)}" onclick="setDESC()"  th:text="#{courses.desc}"></label><br>
+                    <input id="desc" type="radio" name="sortType" th:value="DESC" th:checked="${sortType == 'DESC'}"
+                           hidden/>
+                    <label for="desc" id="descl" th:class="${classes.get(1)}" onclick="setDESC()"
+                           th:text="#{courses.desc}"></label><br>
                 </div>
             </div>
 
@@ -42,7 +46,6 @@
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{courses.topic}"></span>
-<!--                <input class="form-control" aria-label="With textarea" type="text" name="topic" placeholder="Топік">-->
                 <select name="topic" class="custom-select">
                     <option
                             th:each="t:${topicList}"
@@ -76,14 +79,16 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="course : ${courses.page}">
-                <td th:text="${course.getId()}">id</td>
-                <td><a th:href="@{//{id} (id=${course.getId})}" th:text="${course.getName()}"/></td>
+            <tr th:each="course,iter : ${courses.page}">
+                <td th:text="${(courses.paging.getPageNumber()-1) * courses.paging.getPageSize() + (iter.index+1)}">id</td>
+                <td><a th:href="@{courses/{id} (id=${course.getId})}" th:text="${course.getName()}"/></td>
                 <td th:text="${course.getDescription()}"/>
                 <td th:text="${course.getCapacity()}"/>
                 <td th:text="${course.getSemesterStart()}"/>
                 <td th:text="${course.getSemesterDuration()}"/>
-                <td th:text="${course.getTeacher().getLastName()} + ' ' + ${course.getTeacher().getFirstName().charAt(0)} + '.' + ${course.getTeacher().getSecondName().charAt(0)} + '.' "/>
+
+                <td th:if="${course.getTeacher() != null}" th:text="${course.getTeacher().getLastName()} + ' ' + ${course.getTeacher().getFirstName().charAt(0)} + '.' + ${course.getTeacher().getSecondName().charAt(0)} + '.' "/>
+                <td th:if="${course.getTeacher() == null}" th:text="#{courses.without_teacher}"/>
             </tr>
             </tbody>
         </table>
@@ -108,7 +113,8 @@
                 </th:block>
                 <li class="page-item" th:classappend="${!courses.paging.isNextEnabled()? 'disabled' : ''}">
                     <a class="page-link"
-                       th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"  th:text="#{courses.next}"></a>
+                       th:href="@{'/?pageNumber=' + ${courses.paging.pageNumber + 1} + '&courseName='+${courseName}+ '&duration='+${duration}+ '&capacity='+${capacity}  +'&topic='+${topic} + '&teacher='+${teacher}}"
+                       th:text="#{courses.next}"></a>
                 </li>
             </ul>
         </nav>
@@ -117,14 +123,14 @@
 
 <script>
 
-    function setASC(){
+    function setASC() {
         document.getElementById("ascl").classList.remove("btn-outline-primary");
         document.getElementById("ascl").classList.add("btn-primary");
         document.getElementById("descl").classList.remove("btn-danger");
         document.getElementById("descl").classList.add("btn-outline-danger");
     }
 
-    function setDESC(){
+    function setDESC() {
         document.getElementById("ascl").classList.remove("btn-primary");
         document.getElementById("ascl").classList.add("btn-outline-primary");
         document.getElementById("descl").classList.remove("btn-outline-danger");

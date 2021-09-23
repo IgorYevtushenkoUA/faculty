@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource(value = "messages.properties", encoding = "UTF-8")
 public class FacultyApplication {
 
 	public static void main(String[] args) {
@@ -26,6 +25,8 @@ public class FacultyApplication {
 		UserService userService = applicationContext.getBean(UserService.class);
 		RoleService roleService = applicationContext.getBean(RoleService.class);
 		StudentHasCourseRepository studentHasCourseRepository = applicationContext.getBean(StudentHasCourseRepository.class);
+
+		System.out.println(userService.findTeacherById(4));
 
 	}
 

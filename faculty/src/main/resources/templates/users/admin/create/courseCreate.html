@@ -23,25 +23,29 @@
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{courseCreate.topic}"></span>
-                <input class="form-control" aria-label="With textarea" type="text" th:name="topic"
-                       placeholder="Topic">
+                <select th:name="topicId" class="custom-select">
+                    <option
+                            th:each="t:${topics}"
+                            th:value="${t.getId()}"
+                            th:text="${t.getName()}"/>
+                </select>
             </div>
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{courseCreate.capacity}"></span>
-                <input class="form-control" aria-label="With textarea" type="text" th:name="capacity"
+                <input class="form-control" aria-label="With textarea" type="number" th:min="10" th:max="150" th:name="capacity"
                        placeholder="Capacity">
             </div>
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{courseCreate.semesterStart}"></span>
-                <input class="form-control" aria-label="With textarea" type="text" th:name="semesterStart"
+                <input class="form-control" aria-label="With textarea" type="number" th:min="1" th:max="8" th:name="semesterStart"
                        placeholder="Semester Start">
             </div>
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{courseCreate.duration}"></span>
-                <input class="form-control" aria-label="With textarea" type="text" th:name="semesterDuration"
+                <input class="form-control" aria-label="With textarea" type="number" th:min="1" th:max="2" th:name="semesterDuration"
                        placeholder="Semester Duration">
             </div>
 
@@ -53,9 +57,14 @@
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{courseCreate.teacher}"></span>
-                <input class="form-control" aria-label="With textarea" type="text" th:name="teacherName"
-                       placeholder="Teacher PIB">
+                <select th:name="teacherId" class="custom-select">
+                    <option
+                            th:each="t:${teachers}"
+                            th:value="${t.getId()}"
+                            th:text="${t.getLastName()} + ' ' + ${t.getFirstName()} + ' ' + ${t.getSecondName()}"/>
+                </select>
             </div>
+
             <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{courseCreate.create}"></button>
         </form>
     </div>

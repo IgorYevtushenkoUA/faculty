@@ -9,16 +9,13 @@ import com.example.faculty.service.RoleService;
 import com.example.faculty.service.TopicService;
 import com.example.faculty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.faculty.util.Constants.DEFAULT_PAGE_SIZE;
+import static com.example.faculty.util.Methods.getRole;
 
 @Controller
 public class AdminController {
@@ -112,27 +109,29 @@ public class AdminController {
     }
 
     @GetMapping("/admin/courses/create")
-    public String createCourseGet() {
+    public String createCourseGet(Model model) {
+        model.addAttribute("topics", topicService.findAll());
+        model.addAttribute("teachers", userService.findAllTeacher());
         return "/users/admin/create/courseCreate";
     }
 
     @PostMapping("/admin/courses/create")
     public String createCoursePost(
             @RequestParam("name") String name,
-            @RequestParam("topic") String topic,
+            @RequestParam("topicId") int topicId,
             @RequestParam("capacity") Integer capacity,
             @RequestParam("semesterStart") Integer semesterStart,
             @RequestParam("semesterDuration") Integer semesterDuration,
             @RequestParam("description") String description,
-            @RequestParam("teacherName") String teacherName) {
+            @RequestParam("teacherId") int teacherId) {
         Course course = new Course();
         course.setName(name);
-        course.setTopic(topicService.findByName(topic));
+        course.setTopic(topicService.findById(topicId));
         course.setCapacity(capacity);
         course.setSemesterStart(semesterStart);
         course.setSemesterDuration(semesterDuration);
         course.setDescription(description);
-        course.setTeacher(userService.findTeacherByPIB(teacherName));
+        course.setTeacher(userService.findTeacherById(teacherId));
         courseService.save(course);
         return "redirect:/admin";
     }
@@ -141,15 +140,30 @@ public class AdminController {
     public String courseInfoGet(Model model,
                                 @PathVariable("id") Integer id) {
         model.addAttribute("course", courseService.findById(id));
+        model.addAttribute("topics", topicService.findAll());
+        model.addAttribute("teachers", userService.findAllTeacher());
         return "/users/admin/courseInfo";
     }
 
     @PostMapping(value = "/admin/courses/{id}", params = "action=save")
-    public String courseInfoEditPost(@PathVariable("id") Integer id, @RequestParam("name") String name) {
+    public String courseInfoEditPost(@PathVariable("id") int id,
+                                     @RequestParam("name") String name,
+                                     @RequestParam("topicId") int topicId,
+                                     @RequestParam("capacity") int capacity,
+                                     @RequestParam("semesterStart") int semesterStart,
+                                     @RequestParam("semesterDuration") int semesterDuration,
+                                     @RequestParam("description") String description,
+                                     @RequestParam("teacherId") int teacherId) {
         Course course = courseService.findById(id);
         course.setName(name);
+        course.setTopic(topicService.findById(topicId));
+        course.setCapacity(capacity);
+        course.setSemesterStart(semesterStart);
+        course.setSemesterDuration(semesterDuration);
+        course.setDescription(description);
+        course.setTeacher(userService.findTeacherById(teacherId));
         courseService.save(course);
-        return "redirect:/admin/courses";
+        return "redirect:/courses/{id}";
     }
 
     @PostMapping(value = "/admin/courses/{id}", params = "action=delete")
@@ -191,6 +205,11 @@ public class AdminController {
     @PostMapping("/admin/students/create")
     public String studentRegisterPost() {
         return "redirect:/admin/students";
+    }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
     }
 
 }

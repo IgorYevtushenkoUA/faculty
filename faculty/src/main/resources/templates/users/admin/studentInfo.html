@@ -14,7 +14,7 @@
     <h1 th:text="${student.getLastName()} + ' ' + ${student.getFirstName()} + ' ' + ${student.getSecondName()}"/>
     <form th:action="@{/admin/students/{id} (id=${student.getId()})}" method="post">
         <button type="submit"
-                class="btn"
+                class="btn btn-secondary"
                 th:text="${student.isEnable()} ? #{studentInfo.unblock} : #{studentInfo.block}"/>
     </form>
 </div>

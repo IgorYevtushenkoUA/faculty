@@ -11,6 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import static com.example.faculty.util.Methods.getRole;
 
 @Controller
 public class RegistrationController {
@@ -28,17 +31,25 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registrationPost(@ModelAttribute("userForm") Student userForm, BindingResult bindingResult, Model model) {
+    public String registrationPost(@ModelAttribute("userForm") Student userForm,
+                                   BindingResult bindingResult,
+                                   Model model) {
         userForm.setEnable(true);
 
-        if (bindingResult.hasErrors())
+        if (userService.findByEmail(userForm.getEmail()) != null) {
+            System.out.println("user should change email");
+            model.addAttribute("message", "Please enter another email");
             return "register";
+        }
 
         if (!userService.save(userForm, roleService.findByName(ROLE.ROLE_STUDENT.name()))) {
             model.addAttribute("userError", "Registration error");
             return "register";
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
-
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
 }

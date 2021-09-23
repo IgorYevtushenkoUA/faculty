@@ -18,7 +18,7 @@ public class Teacher extends User {
     private List<Course> courses;
 
     public String toString() {
-        return "Teacher:\n" + super.toString();
+        return "Teacher:\n" + super.toString() + "\n";
     }
 
 
