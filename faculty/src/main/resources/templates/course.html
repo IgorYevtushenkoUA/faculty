@@ -74,22 +74,25 @@
         </tbody>
     </table>
 
-    <div th:if="${showRegisterBtn}">
-        <div th:if="${canEnroll}">
-            <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
-                <button type="submit" class="btn btn-primary btn-lg btn-block" th:text="#{course.enroll}"></button>
-            </form>
-        </div>
-        <div th:if="!${canEnroll}">
-            <a class="btn btn-primary btn-lg btn-block" href="/login" role="button" th:text="#{course.login}"></a>
-        </div>
+    <div th:if="${role}=='ROLE_STUDENT'">
+        <form th:action="@{/courses/{courseId} (courseId=${courseId})}" method="post">
+
+            <button th:if="${!isEnrolled}"
+                    th:text="#{course.enroll}" type="submit" class="btn btn-primary btn-lg btn-block" th:name="action"
+                    th:value="enroll"></button>
+            <button th:if="${isEnrolled}"
+                    th:text="#{course.drop_out}" type="submit" class="btn btn-primary btn-lg btn-block" th:name="action"
+                    th:value="drop_out"></button>
+        </form>
+    </div>
+    <div th:if="${role} == 'ROLE_GUEST'">
+        <a class="btn btn-primary btn-lg btn-block" href="/login" role="button" th:text="#{course.login}"></a>
     </div>
 
-    <div th:if="${role}==ROLE_ADMIN">
-        <a class="btn btn-primary btn-lg btn-block" th:href="@{/admin/courses/{courseId} (courseId=${courseId})}" th:text="#{courseInfo.edit}"/>
+    <div th:if="${role}=='ROLE_ADMIN'">
+        <a class="btn btn-primary btn-lg btn-block" th:href="@{/admin/courses/{courseId} (courseId=${courseId})}"
+           th:text="#{courseInfo.edit}"/>
     </div>
-
-
 </div>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>

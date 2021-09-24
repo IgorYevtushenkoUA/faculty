@@ -14,8 +14,8 @@
     <form th:action="@{/student}" method="get" class="row">
         <div class="input-group">
             <select class="custom-select" name="type">
-                <option th:value="IN_PROGRESS" th:text="IN_PROGRESS" th:selected="(${type}==IN_PROGRESS)"/>
-                <option th:value="NOT_STARTED" th:text="NOT_STARTED" th:selected="(${type}==NOT_STARTED)"/>
+                <option th:value="IN_PROGRESS" th:text="'IN ' + 'PROGRESS'" th:selected="(${type}==IN_PROGRESS)"/>
+                <option th:value="NOT_STARTED" th:text="'NOT ' + 'STARTED'" th:selected="(${type}==NOT_STARTED)"/>
                 <option th:value="FINISHED" th:text="FINISHED" th:selected="(${type}==FINISHED)"/>
             </select>
             <div class="input-group-append">
@@ -35,7 +35,8 @@
         <tbody>
         <tr th:each="course, iter :${courses}">
             <td th:text="${iter.index+1}"/>
-            <td th:text="${course.getCourseName()}"/>
+            <td th:if="${type}=='NOT_STARTED'"><a th:href="@{/courses/{courseId} (courseId=${course.getCourseId()})}" th:text="${course.getCourseName()}"></a></td>
+            <td th:if="${type}!='NOT_STARTED'" th:text="${course.getCourseName()}"></td>
             <td th:text="${course.getMark()}"/>
         </tr>
         </tbody>

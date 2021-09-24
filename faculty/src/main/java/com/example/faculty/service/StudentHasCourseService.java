@@ -32,6 +32,10 @@ public class StudentHasCourseService {
         studentHasCourseRepository.save(shc);
     }
 
+    public void dropOutFromCourse(int studentId, int courseId){
+        studentHasCourseRepository.delete(studentHasCourseRepository.findByStudentAndCourse(studentId, courseId));
+    }
+
     public List<StudentHasCourse> findAllStudentsByCourseAndYearAndName(int courseId, int year){
         return studentHasCourseRepository.findAllStudentsByCourseAndYearAndName(courseId, year);
     }

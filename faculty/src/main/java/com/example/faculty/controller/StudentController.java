@@ -46,7 +46,7 @@ public class StudentController {
     private List<StudentCourseInfoDto> buildStudentCourseInfoDto(int studentId, List<Course> courses) {
         List<StudentCourseInfoDto> studentCourseInfoDtoList = new ArrayList<>();
         for (Course course : courses) {
-            studentCourseInfoDtoList.add(new StudentCourseInfoDto(course.getName(),
+            studentCourseInfoDtoList.add(new StudentCourseInfoDto(course.getId(), course.getName(),
                     studentHasCourseService.getMarkForCourse(studentId, course.getId())));
         }
         return studentCourseInfoDtoList;

@@ -70,36 +70,36 @@ public class CourseController {
                             @PathVariable("courseId") Integer courseId) {
         model.addAttribute("courseId", courseId);
         model.addAttribute("courseInfoDto", buildCourseInfoDto(courseId));
-        model.addAttribute("canEnroll", isCanEnroll());
-        model.addAttribute("showRegisterBtn", showRegisterBtn());
+        model.addAttribute("isEnrolled", isEnrolled(courseId));
         return "course";
     }
 
-    private boolean isCanEnroll() {
-        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (obj.equals("anonymousUser"))
-            return false;
-        return true;
-    }
-
-    private boolean showRegisterBtn(){
-        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (obj.equals("anonymousUser"))
-            return true;
-        User user = (User) obj;
-        return user.getRole().getName().equals(ROLE.ROLE_STUDENT.name()) && user.isEnabled();
-    }
-
-    @PostMapping("/courses/{courseId}")
-    public String coursePost(@PathVariable("courseId") Integer courseId) {
+    @PostMapping(value = "/courses/{courseId}", params = "action=enroll")
+    public String coursePostEnroll(@PathVariable("courseId") Integer courseId) {
         Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         studentHasCourseService.enrollStudentToCourse(student.getId(), courseId);
+        return "redirect:/courses/{courseId}";
+    }
+
+    @PostMapping(value = "/courses/{courseId}", params = "action=drop_out")
+    public String coursePostDropOut(@PathVariable("courseId") Integer courseId) {
+        Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        studentHasCourseService.dropOutFromCourse(student.getId(), courseId);
         return "redirect:/courses/{courseId}";
     }
 
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("role", getRole());
+    }
+
+    private boolean isEnrolled(int courseId) {
+        Object obj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!obj.equals("anonymousUser")) {
+            User user = (User) obj;
+            return studentHasCourseService.findByStudentAndCourse(user.getId(), courseId) != null;
+        }
+        return false;
     }
 
     private CourseInfoDto buildCourseInfoDto(int courseId) {

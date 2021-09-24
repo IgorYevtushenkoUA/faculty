@@ -5,6 +5,7 @@ import com.example.faculty.enums.ROLE;
 import com.example.faculty.repository.StudentHasCourseRepository;
 import com.example.faculty.service.CourseService;
 import com.example.faculty.service.RoleService;
+import com.example.faculty.service.StudentHasCourseService;
 import com.example.faculty.service.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,9 +25,7 @@ public class FacultyApplication {
 		CourseService courseService = applicationContext.getBean(CourseService.class);
 		UserService userService = applicationContext.getBean(UserService.class);
 		RoleService roleService = applicationContext.getBean(RoleService.class);
-		StudentHasCourseRepository studentHasCourseRepository = applicationContext.getBean(StudentHasCourseRepository.class);
-
-		System.out.println(courseService.findCoursesWithoutTeacher());
+		StudentHasCourseService studentHasCourseService = applicationContext.getBean(StudentHasCourseService.class);
 
 	}
 
