@@ -24,6 +24,11 @@ public class RegistrationController {
     @Autowired
     RoleService roleService;
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
+
     @GetMapping("/register")
     public String registrationGet(Model model) {
         model.addAttribute("userForm", new Student());
@@ -48,8 +53,5 @@ public class RegistrationController {
         }
         return "redirect:/login";
     }
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("role", getRole());
-    }
+
 }

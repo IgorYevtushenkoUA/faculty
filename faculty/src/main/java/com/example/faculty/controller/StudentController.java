@@ -21,35 +21,28 @@ import static com.example.faculty.util.Methods.getRole;
 @Controller
 public class StudentController {
 
+    StudentCourseInfoDto studentCourseInfoDto;
+
     @Autowired
     CourseService courseService;
 
     @Autowired
     StudentHasCourseService studentHasCourseService;
 
-    @GetMapping("/student")
-    public String studentGet(Model model,
-                             @RequestParam(value = "type", defaultValue = "progress") String type) {
-        Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("type", type);
-        model.addAttribute("courses", buildStudentCourseInfoDto(student.getId(),
-                courseService.findAllStudentCoursesByType(student.getId(), type)));
-
-        return "/users/student/studentPersonalPage";
-    }
-
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("role", getRole());
     }
 
-    private List<StudentCourseInfoDto> buildStudentCourseInfoDto(int studentId, List<Course> courses) {
-        List<StudentCourseInfoDto> studentCourseInfoDtoList = new ArrayList<>();
-        for (Course course : courses) {
-            studentCourseInfoDtoList.add(new StudentCourseInfoDto(course.getId(), course.getName(),
-                    studentHasCourseService.getMarkForCourse(studentId, course.getId())));
-        }
-        return studentCourseInfoDtoList;
+    @GetMapping("/student")
+    public String studentGet(Model model,
+                             @RequestParam(value = "type", defaultValue = "progress") String type) {
+        Student student = (Student) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute("type", type);
+        model.addAttribute("courses", studentCourseInfoDto.buildStudentCourseInfoDto(student.getId(),
+                courseService.findAllStudentCoursesByType(student.getId(), type), studentHasCourseService));
+
+        return "/users/student/studentPersonalPage";
     }
 
 }

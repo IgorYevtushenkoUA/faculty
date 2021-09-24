@@ -24,6 +24,8 @@ import static com.example.faculty.util.Methods.getRole;
 @Controller
 public class CourseController {
 
+    CourseInfoDto courseInfoDto;
+
     @Autowired
     CourseService courseService;
 
@@ -36,6 +38,11 @@ public class CourseController {
     @Autowired
     TopicService topicService;
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
+    
     @GetMapping("/")
     public String coursesGet(
             Model model,
@@ -55,21 +62,16 @@ public class CourseController {
         model.addAttribute("teacher", teacher);
         model.addAttribute("sortType", sortType);
         model.addAttribute("courses", courseService.getPage(courseName, duration, capacity, topic, teacher, pageNumber, size, sortType));
-        model.addAttribute("classes", setClass(sortType));
+        model.addAttribute("classes", setBtnClass(sortType));
         model.addAttribute("topicList", topicService.findAll());
         return "courses";
-    }
-
-    private List<String> setClass(String sortType) {
-        if (sortType.equals("ASC")) return List.of("btn btn-primary", "btn btn-outline-danger");
-        return List.of("btn btn-outline-primary", "btn btn-danger");
     }
 
     @GetMapping("/courses/{courseId}")
     public String courseGet(Model model,
                             @PathVariable("courseId") Integer courseId) {
         model.addAttribute("courseId", courseId);
-        model.addAttribute("courseInfoDto", buildCourseInfoDto(courseId));
+        model.addAttribute("courseInfoDto", courseInfoDto.buildCourseInfoDto(courseId, userService, courseService, studentHasCourseService));
         model.addAttribute("isEnrolled", isEnrolled(courseId));
         return "course";
     }
@@ -88,9 +90,9 @@ public class CourseController {
         return "redirect:/courses/{courseId}";
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("role", getRole());
+    private List<String> setBtnClass(String sortType) {
+        if (sortType.equals("ASC")) return List.of("btn btn-primary", "btn btn-outline-danger");
+        return List.of("btn btn-outline-primary", "btn btn-danger");
     }
 
     private boolean isEnrolled(int courseId) {
@@ -101,21 +103,4 @@ public class CourseController {
         }
         return false;
     }
-
-    private CourseInfoDto buildCourseInfoDto(int courseId) {
-        CourseInfoDto courseInfoDto = new CourseInfoDto();
-        List<StudentInfoDto> enrolledStudent = new ArrayList<>();
-        for (StudentHasCourse studentHasCourse : studentHasCourseService.findAllStudentsByCourse(courseId)) {
-            enrolledStudent.add(
-                    new StudentInfoDto(
-                            userService.findStudentById(studentHasCourse.getStudentCourseId().getStudentId()),
-                            studentHasCourse.getMark(),
-                            studentHasCourse.getRecordingTime()));
-        }
-        courseInfoDto.setCourse(courseService.findById(courseId));
-        courseInfoDto.setEnrolledStudent(enrolledStudent);
-        return courseInfoDto;
-    }
-
-
 }

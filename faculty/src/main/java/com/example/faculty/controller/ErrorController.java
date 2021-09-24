@@ -11,15 +11,15 @@ import static com.example.faculty.util.Methods.getRole;
 @Controller
 public class ErrorController {
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
+
     @GetMapping("/error")
     public String errorGet(Model model,
                            @RequestParam(value = "error", defaultValue = "Something went wrong") String message) {
         model.addAttribute("message", message);
         return "error";
-    }
-
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("role", getRole());
     }
 }

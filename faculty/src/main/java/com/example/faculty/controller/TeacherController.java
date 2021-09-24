@@ -13,13 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.example.faculty.util.Methods.getRole;
 
 @Controller
 public class TeacherController {
+
+    CourseStudentsDto courseStudentsDto;
 
     @Autowired
     CourseService courseService;
@@ -29,6 +28,11 @@ public class TeacherController {
 
     @Autowired
     StudentHasCourseService studentHasCourseService;
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
 
     @GetMapping("/teacher")
     public String teacherCoursesGet(Model model) {
@@ -43,7 +47,7 @@ public class TeacherController {
                                        @PathVariable("courseId") Integer courseId,
                                        @RequestParam(value = "year", defaultValue = "2021") Integer year) {
         Teacher teacher = (Teacher) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        model.addAttribute("courseStudentsDto", buildCourseStudentsDto(teacher.getId(), courseId, year));
+        model.addAttribute("courseStudentsDto", courseStudentsDto.buildCourseStudentsDto(teacher.getId(), courseId, year, userService, courseService, studentHasCourseService));
         return "/users/teacher/courseInfo";
     }
 
@@ -52,36 +56,11 @@ public class TeacherController {
                                               @PathVariable("courseId") Integer courseId,
                                               @PathVariable("studentId") Integer studentId,
                                               @RequestParam("mark") int mark) {
-
         StudentHasCourse studentHasCourse = studentHasCourseService.findByStudentAndCourse(studentId, courseId);
         studentHasCourse.setMark(mark);
         studentHasCourseService.save(studentHasCourse);
         model.addAttribute("student", userService.findStudentInfoByIdAndCourseId(courseId, studentId));
         return "redirect:/teacher/{courseId}";
     }
-
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("role", getRole());
-    }
-
-    private CourseStudentsDto buildCourseStudentsDto(int teacherId, int courseId, int year) {
-        CourseStudentsDto courseStudentsDto = new CourseStudentsDto();
-        courseStudentsDto.setTeacherId(teacherId);
-        courseStudentsDto.setYear(year);
-        List<StudentInfoDto> studentInfoDtoList = new ArrayList<>();
-        List<StudentHasCourse> studentHasCourseList = studentHasCourseService.findAllStudentsByCourseAndYearAndName(courseId, year);
-        for (StudentHasCourse studentHasCourse : studentHasCourseList) {
-            StudentInfoDto studentInfoDto = new StudentInfoDto();
-            studentInfoDto.setStudent(userService.findStudentById(studentHasCourse.getStudentCourseId().getStudentId()));
-            studentInfoDto.setMark(studentHasCourse.getMark());
-            studentInfoDto.setRecordingTime(studentHasCourse.getRecordingTime());
-            studentInfoDtoList.add(studentInfoDto);
-        }
-        courseStudentsDto.setCourse(courseService.findById(courseId));
-        courseStudentsDto.setStudents(studentInfoDtoList);
-        return courseStudentsDto;
-    }
-
 
 }

@@ -32,6 +32,11 @@ public class AdminController {
     @Autowired
     TopicService topicService;
 
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("role", getRole());
+    }
+
     @GetMapping("/admin")
     public String adminGet() {
         return "/users/admin/adminPersonalPage";
@@ -87,7 +92,6 @@ public class AdminController {
         return "redirect:/admin";
     }
 
-    // todo -> repeated code
     @GetMapping("/admin/courses")
     public String coursesGet(Model model,
                              @RequestParam(value = "courseName", defaultValue = "") String courseName,
@@ -206,10 +210,4 @@ public class AdminController {
     public String studentRegisterPost() {
         return "redirect:/admin/students";
     }
-
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        model.addAttribute("role", getRole());
-    }
-
 }
