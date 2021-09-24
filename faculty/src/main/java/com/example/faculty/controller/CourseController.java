@@ -68,12 +68,8 @@ public class CourseController {
     @GetMapping("/courses/{courseId}")
     public String courseGet(Model model,
                             @PathVariable("courseId") Integer courseId) {
-
-        System.out.println(buildCourseInfoDto(courseId));
-
         model.addAttribute("courseId", courseId);
         model.addAttribute("courseInfoDto", buildCourseInfoDto(courseId));
-
         model.addAttribute("canEnroll", isCanEnroll());
         model.addAttribute("showRegisterBtn", showRegisterBtn());
         return "course";

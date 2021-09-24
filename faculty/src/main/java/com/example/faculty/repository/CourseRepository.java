@@ -17,6 +17,9 @@ public interface CourseRepository extends PagingAndSortingRepository<Course, Int
 
     Course findById(int id);
 
+    @Query("select c from Course c where c.teacher.id is null")
+    List<Course> findCoursesWithoutTeacher();
+
     @Query("select distinct(c.name) from Course c")
     List<String> findAllCourseNames();
 

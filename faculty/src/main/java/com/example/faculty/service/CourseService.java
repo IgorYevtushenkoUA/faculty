@@ -34,6 +34,10 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
+    public List<Course> findCoursesWithoutTeacher(){
+        return courseRepository.findCoursesWithoutTeacher();
+    }
+
     public Course findById(int id) {
         return courseRepository.findById(id);
     }
@@ -54,13 +58,6 @@ public class CourseService {
             c.setName(course.getName());
             courseRepository.save(c);
         }
-    }
-
-    public Page<Course> findAllByParams(List<String> courseName, List<Integer> duration,
-                                        List<Integer> capacity, List<String> topic,
-                                        List<Integer> teacherId, Pageable pageable) {
-        return courseRepository.findAllByParams(courseName, duration, capacity,
-                topic, teacherId, pageable);
     }
 
     public List<Course> findAllTeacherCourses(int id) {
@@ -137,6 +134,13 @@ public class CourseService {
         }
         return findAllByParams(setCourseNameParam(courseName), setDurationParam(duration), setCapacityParam(capacity),
                 setTopicsParam(topic), setTeacherNameParam(teacher), pageable);
+    }
+
+    public Page<Course> findAllByParams(List<String> courseName, List<Integer> duration,
+                                        List<Integer> capacity, List<String> topic,
+                                        List<Integer> teacherId, Pageable pageable) {
+        return courseRepository.findAllByParams(courseName, duration, capacity,
+                topic, teacherId, pageable);
     }
 
     private List<String> setCourseNameParam(String courseName) {

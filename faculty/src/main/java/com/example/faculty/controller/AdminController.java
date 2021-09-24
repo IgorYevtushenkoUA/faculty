@@ -55,7 +55,7 @@ public class AdminController {
         System.out.println(userService.findById(teacherId));
         System.out.println("-----------");
         model.addAttribute("courses", courseService.findAllTeacherCourses(teacherId));
-        model.addAttribute("coursesList", courseService.findAll());
+        model.addAttribute("coursesList", courseService.findCoursesWithoutTeacher());
         model.addAttribute("teacher", userService.findTeacherById(teacherId));
         return "/users/admin/teacherInfo";
     }
