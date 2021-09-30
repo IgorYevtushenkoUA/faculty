@@ -1,39 +1,42 @@
 package com.example.faculty.service;
 
+import com.example.faculty.entety.Role;
 import com.example.faculty.repository.RoleRepository;
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Optional;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.*;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RoleServiceTest {
 
 
-    @Autowired
-    private RoleService roleService;
+    @InjectMocks
+    RoleService roleService;
+
+    @Mock
+    RoleRepository roleRepository;
+
+    @Before
+    public void setUp() {
+        roleService = new RoleService(roleRepository);
+    }
 
     @Test
-    void findByNameSuccessful(){
-        System.out.println("---------------------");
-//        System.out.println(roleService.findByName("ROLE_ADMIN"));
-//        verify(roleService, times(1));
-        boolean bool = true;
-        Assert.assertTrue(bool);
+    public void findByName_Return_Null() {
+        when(roleService.findByName("Hello")).thenReturn(null);
+    }
+
+    @Test
+    public void findByName_Return_Result() {
+        Role role = new Role();
+        role.setId(1);
+        role.setName("ROLE_ADMIN");
+        when(roleService.findByName("ROLE_ADMIN")).thenReturn(role);
     }
 
 }

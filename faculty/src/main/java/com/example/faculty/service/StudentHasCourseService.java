@@ -4,6 +4,7 @@ import com.example.faculty.entety.Student;
 import com.example.faculty.entety.StudentCourseId;
 import com.example.faculty.entety.StudentHasCourse;
 import com.example.faculty.enums.STATUS;
+import com.example.faculty.repository.StatusRepository;
 import com.example.faculty.repository.StudentHasCourseRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,14 @@ public class StudentHasCourseService {
 
     private final StudentHasCourseRepository studentHasCourseRepository;
 
-    @Autowired
-    StatusService statusService;
+    private final StatusRepository statusRepository;
 
     public void enrollStudentToCourse(int studentId, int courseId) {
         StudentHasCourse shc = new StudentHasCourse(
                 new StudentCourseId(studentId, courseId),
                 null,
                 new Timestamp(System.currentTimeMillis()),
-                statusService.findByName(STATUS.NOT_STARTED.name()));
+                statusRepository.findByName(STATUS.NOT_STARTED.name()));
         studentHasCourseRepository.save(shc);
     }
 
