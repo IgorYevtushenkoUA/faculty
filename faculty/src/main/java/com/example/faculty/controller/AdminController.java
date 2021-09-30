@@ -56,9 +56,6 @@ public class AdminController {
     @GetMapping("/admin/teachers/{teacherId}")
     public String teacherGet(Model model,
                              @PathVariable("teacherId") int teacherId) {
-        System.out.println("-----------");
-        System.out.println(userService.findById(teacherId));
-        System.out.println("-----------");
         model.addAttribute("courses", courseService.findAllTeacherCourses(teacherId));
         model.addAttribute("coursesList", courseService.findCoursesWithoutTeacher());
         model.addAttribute("teacher", userService.findTeacherById(teacherId));
@@ -87,9 +84,13 @@ public class AdminController {
     }
 
     @PostMapping("/admin/teachers/register")
-    public String registerTeacherPost(@ModelAttribute("teacherForm") Teacher teacherForm) {
-        userService.save(teacherForm, roleService.findByName(ROLE.ROLE_TEACHER.name()));
-        return "redirect:/admin";
+    public String registerTeacherPost(@ModelAttribute("teacherForm") Teacher teacherForm, Model model) {
+        if (userService.findByEmail(teacherForm.getEmail()) == null) {
+            userService.save(teacherForm, roleService.findByName(ROLE.ROLE_TEACHER.name()));
+            return "redirect:/admin";
+        }
+        model.addAttribute("message", "User with this email is exist");
+        return "/users/admin/create/teacherRegister";
     }
 
     @GetMapping("/admin/courses")
@@ -207,7 +208,13 @@ public class AdminController {
     }
 
     @PostMapping("/admin/students/create")
-    public String studentRegisterPost() {
-        return "redirect:/admin/students";
+    public String studentRegisterPost(@ModelAttribute("userForm") Student userForm, Model model) {
+        if (userService.findByEmail(userForm.getEmail()) == null) {
+            userForm.setEnable(true);
+            userService.save(userForm, roleService.findByName(ROLE.ROLE_STUDENT.name()));
+            return "redirect:/admin/students/create";
+        }
+        model.addAttribute("message", "User with this email exists");
+        return "/users/admin/create/studentRegister";
     }
 }

@@ -17,7 +17,7 @@
     <!--        <div th:insert="components/registerStudentForm :: registerStudentForm"/>-->
 
     <div class="mt-5">
-        <form th:action="@{/register}" method="post" th:object="${userForm}">
+        <form th:action="@{/admin/students/create}" method="post" th:object="${userForm}">
 
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{studentRegister.firstName}"></span>
@@ -47,6 +47,10 @@
             <div class="input-group p-1">
                 <span class="input-group-text" th:text="#{studentRegister.course}"></span>
                 <input type="number" th:field="*{courseNum}" class="form-control" th:min="1" th:max="4">
+            </div>
+
+            <div>
+                <span th:text="${message}" class="text-danger"></span>
             </div>
 
             <button type="submit" class="btn btn-light btn-lg btn-block" th:text="#{studentRegister.register}"></button>

@@ -1,9 +1,6 @@
 package com.example.faculty.service;
 
-import com.example.faculty.entety.Student;
-import com.example.faculty.entety.Teacher;
 import com.example.faculty.repository.UserRepository;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

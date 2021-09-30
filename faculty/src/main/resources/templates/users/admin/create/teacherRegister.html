@@ -47,6 +47,10 @@
                        placeholder="Password">
             </div>
 
+            <div>
+                <span th:text="${message}" class="text-danger"></span>
+            </div>
+
             <button class="btn btn-light btn-lg btn-block" type="submit" th:text="#{teacherRegister.register}"></button>
         </form>
     </div>
