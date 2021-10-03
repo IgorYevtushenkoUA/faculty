@@ -11,8 +11,10 @@ import com.example.faculty.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static com.example.faculty.util.Methods.getRole;
@@ -84,7 +86,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/teachers/register")
-    public String registerTeacherPost(@ModelAttribute("teacherForm") Teacher teacherForm, Model model) {
+    public String registerTeacherPost(@ModelAttribute("teacherForm") @Valid Teacher teacherForm, BindingResult bindingResult, Model model) {
+        System.out.println("teacherForm : " + teacherForm);
+        if (bindingResult.hasErrors()) {
+            System.out.println("teacherFormError : " + teacherForm);
+            return "/users/admin/create/teacherRegister";
+        }
         if (userService.findByEmail(teacherForm.getEmail()) == null) {
             userService.save(teacherForm, roleService.findByName(ROLE.ROLE_TEACHER.name()));
             return "redirect:/admin";
@@ -117,27 +124,26 @@ public class AdminController {
     public String createCourseGet(Model model) {
         model.addAttribute("topics", topicService.findAll());
         model.addAttribute("teachers", userService.findAllTeacher());
+        model.addAttribute("courseForm", new Course());
         return "/users/admin/create/courseCreate";
     }
 
     @PostMapping("/admin/courses/create")
-    public String createCoursePost(
-            @RequestParam("name") String name,
-            @RequestParam("topicId") int topicId,
-            @RequestParam("capacity") Integer capacity,
-            @RequestParam("semesterStart") Integer semesterStart,
-            @RequestParam("semesterDuration") Integer semesterDuration,
-            @RequestParam("description") String description,
-            @RequestParam("teacherId") int teacherId) {
-        Course course = new Course();
-        course.setName(name);
-        course.setTopic(topicService.findById(topicId));
-        course.setCapacity(capacity);
-        course.setSemesterStart(semesterStart);
-        course.setSemesterDuration(semesterDuration);
-        course.setDescription(description);
-        course.setTeacher(userService.findTeacherById(teacherId));
-        courseService.save(course);
+    public String createCoursePost(Model model,
+                                   @RequestParam("topicId") int topicId,
+                                   @RequestParam("teacherId") int teacherId,
+                                   @ModelAttribute("courseForm") @Valid Course courseForm, BindingResult bindingResult) {
+
+        System.out.println("bindingResult.hasErrors() :" + bindingResult.hasErrors());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("topics", topicService.findAll());
+            model.addAttribute("teachers", userService.findAllTeacher());
+            return "users/admin/create/courseCreate";
+        }
+
+        courseForm.setTopic(topicService.findById(topicId));
+        courseForm.setTeacher(userService.findTeacherById(teacherId));
+        courseService.save(courseForm);
         return "redirect:/admin";
     }
 
@@ -208,7 +214,10 @@ public class AdminController {
     }
 
     @PostMapping("/admin/students/create")
-    public String studentRegisterPost(@ModelAttribute("userForm") Student userForm, Model model) {
+    public String studentRegisterPost(@ModelAttribute("userForm") @Valid Student userForm, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/users/admin/create/studentRegister";
+        }
         if (userService.findByEmail(userForm.getEmail()) == null) {
             userForm.setEnable(true);
             userService.save(userForm, roleService.findByName(ROLE.ROLE_STUDENT.name()));

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
+
 import static com.example.faculty.util.Methods.getRole;
 
 @Controller
@@ -36,9 +38,18 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
-    public String registrationPost(@ModelAttribute("userForm") Student userForm,
+    public String registrationPost(@ModelAttribute("userForm") @Valid Student userForm,
                                    BindingResult bindingResult,
                                    Model model) {
+
+        System.out.println("bindingResult.hasErrors() :" + bindingResult.hasErrors());
+
+        if(bindingResult.hasErrors()){
+            System.out.println("error with name");
+
+            return "register";
+        }
+
         userForm.setEnable(true);
 
         if (userService.findByEmail(userForm.getEmail()) != null) {

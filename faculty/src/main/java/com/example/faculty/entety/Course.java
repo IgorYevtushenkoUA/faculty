@@ -1,11 +1,9 @@
 package com.example.faculty.entety;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "course")
@@ -13,6 +11,8 @@ import javax.persistence.*;
 @Setter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Course {
 
     @Id
@@ -41,5 +41,6 @@ public class Course {
     private Teacher teacher;
 
     @Column(name = "name")
+    @Pattern(regexp = "^\\w+( +\\w+)*", message = "Not valid course name")
     private String name;
 }
