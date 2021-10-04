@@ -1,8 +1,6 @@
 package com.example.faculty.entety;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -12,6 +10,8 @@ import javax.validation.constraints.Min;
 @Getter
 @Setter
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student extends User {
 
     @Column(name = "course_num")

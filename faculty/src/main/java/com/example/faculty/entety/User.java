@@ -15,6 +15,7 @@ import java.util.Collections;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString

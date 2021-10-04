@@ -16,7 +16,7 @@ public class TopicService {
     private final TopicRepository topicRepository;
 
     public Topic findById(int id) {
-        return topicRepository.findById(id);
+        return topicRepository.findById(id).orElse(null);
     }
 
     public List<Topic> findAll() {

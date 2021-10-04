@@ -12,6 +12,8 @@ import java.util.List;
 @Setter
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role implements GrantedAuthority {
     @Id
     @Column(name = "id")

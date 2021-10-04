@@ -53,8 +53,8 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public void save(User user) {
-        userRepository.save(user);
+    public User save(User user) {
+        return userRepository.save(user);
     }
 
     public Teacher findTeacherByPIB(String PIB) {

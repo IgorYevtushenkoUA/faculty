@@ -39,15 +39,15 @@ public class CourseService {
     }
 
     public Course findById(int id) {
-        return courseRepository.findById(id);
+        return courseRepository.findById(id).orElse(null);
     }
 
-    public void save(Course course) {
-        courseRepository.save(course);
+    public Course save(Course course) {
+        return courseRepository.save(course);
     }
 
     public void update(Course course) {
-        Course c = courseRepository.findById(course.getId());
+        Course c = courseRepository.findById(course.getId()).orElse(null);
         if (c != null) {
             c.setTopic(course.getTopic());
             c.setCapacity(course.getCapacity());
@@ -99,14 +99,14 @@ public class CourseService {
     }
 
     public Course deleteTeacherFromCourse(int id) {
-        Course course = courseRepository.findById(id);
+        Course course = courseRepository.findById(id).orElse(null);
         if (course != null)
             course.setTeacher(null);
         return course;
     }
 
     public Course addTeacherToCourse(int courseId, int teacherId) {
-        Course course = courseRepository.findById(courseId);
+        Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null)
             course.setTeacher(userRepository.findTeacherById(teacherId));
         return course;
